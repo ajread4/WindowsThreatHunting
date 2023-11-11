@@ -3,7 +3,7 @@
 2. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe```, ```scrons.exe```, ```mofcomp.exe```, or ```wmiprvse.exe``` on target machine. 
 3. Use ```eventvwr.msc``` with Microsoft-Windows-WMI-Activity%4Operational for event ID 5857, 5860, and 5861 for ```wmiprvse``` execution. 
 
-# Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/)[T1210](https://attack.mitre.org/techniques/T1210/)
+# Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/) [T1210](https://attack.mitre.org/techniques/T1210/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648. 
 2. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-RDPClient%4Operational for eventid 1024 and 1102 with destination hostname or IP address. 
 3. View registry ```NTUSER\Software\Microsoft\Terminal Server Client\Servers ``` to find RDP connections per user. 
