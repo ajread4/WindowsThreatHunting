@@ -74,6 +74,8 @@
 1. Query AWS CloudTrail related to specific attacker KeyID. 
 	- Command to use: ```aws cloudtrail lookup-events --max-results 200 --lookup-attributes AttributeKey=AccessKeyId,AttributeValue=$KEY_ID | jq '[.Events[].EventName]| unique[]'```
 2. Query AWS CloudTrail with the KeyID as the AWS access key within the GUI. 
+### View Deployed Containers [T1610](https://attack.mitre.org/techniques/T1610/)
+1. Query with [kai](https://github.com/anchore/k8s-inventory) to inventory containers within the environment. 
 ## Network
 
 ### View User Agents
@@ -139,7 +141,7 @@
 	- Commands to use: 
 		- ```aws logs start-query --log-group-name [LogGroupName] --start-time [EpochTime] --end-time [EpochTime] --query-string "filter action='REJECT' and strcontains(srcAddr, "10.0.") | stats  count(*) by srcAddr, dstAddr, action | display srcAddr, dstAddr, action| limit 25"```
 		- ```aws logs get-query-results --query-id [query-id]```
-### Identify Top Internal Talkers 
+### Identify Top Internal Talkers [No TTP]
 1. Query Athena within the GUI looking at VPC Flow Logs.
 	- Query to use: ```SELECT ip, sum(bytes) as total_bytes FROM (SELECT destinationaddress as ip,sum(numbytes) as bytes FROM vpc_flow_logs GROUP BY 1 UNION ALL SELECT sourceaddress as ip,sum(numbytes) as bytes FROM vpc_flow_logs GROUP BY 1) GROUP BY ip ORDER BY total_bytes DESC LIMIT 10```
 2. Query Athena within the CLI looking at VPC Flow Logs.
@@ -147,6 +149,13 @@
 		- ```QUERY_ID=$(aws athena start-query-execution --query-string "SELECT ip, sum(bytes) as total_bytes FROM (SELECT destinationaddress as ip,sum(numbytes) as bytes FROM vpc_flow_logs GROUP BY 1 UNION ALL SELECT sourceaddress as ip,sum(numbytes) as bytes FROM vpc_flow_logs GROUP BY 1) GROUP BY ip ORDER BY total_bytes DESC LIMIT 10" --query-execution-context Database=[DatabaseLogs] --work-group [WorkGroup] --query QueryExecutionId --output text)```
 		- ```aws athena get-query-results --query-execution-id $QUERY_ID --query ResultSet```
 
+### View Deployed Containers [T1610](https://attack.mitre.org/techniques/T1610/)
+1. Query CloudWatch Log Insights with the container log stream/group of application logs. 
+	- Commands to run: 
+		- ```aws logs start-query --log-group-name [LogGroupContainer] --start-time $(date -d '1 hour ago' +"%s") --end-time $(date +"%s") --query-string 'fields log | filter kubernetes.container_name == "[ContainerName]" and log ~= "Incoming HTTP" and log ~= "appdeploymentfromfile"' --output text)```
+		- ```aws logs get-query-results --query-id $QUERY_ID```
+2. Query CloudWatch Log Insights within the GUI with the correct log group of application logs. 
+	- Query to use: ```fields log | filter kubernetes.container_name == "kubernetes-dashboard" and log ~= "Incoming HTTP" and log ~= "appdeploymentfromfile"```
 # Azure 
 
 ## Host
