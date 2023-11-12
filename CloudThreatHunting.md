@@ -1,6 +1,15 @@
 # AWS 
 
 ## Host
+
+### Detect Crypto Miner [T1496](https://attack.mitre.org/techniques/T1496/)
+1. View the Kubernetes Cluster CPU level within the CloudWatch GUI Alarms. 
+2. Query the CloudWatch Logs Inisights for alarms related to crypto miners.
+	- Command to run: ```aws cloudwatch describe-alarms | jq -r '.MetricAlarms[] | select(.StateValue == "ALARM") | .AlarmName'```
+3. Query CloudWatch via the CLI with the appropriate log group of Kubernetes application logs to see interesting pod name. 
+	- Commands to run: 
+		- ```QUERY_ID=$(aws logs start-query --start-time $(date -d "30 mins ago" +"%s") --end-time $(date +"%s") --log-group-name [ApplicationLogGroupName] --query-string 'fields @message | filter kubernetes.container_name == "[ContainerName]"' --output text)```
+		- ```aws logs get-query-results --query-id $QUERY_ID | jq -r '.results[][] | select(.field == "@message") | select(.value | contains ("appdeploymentfromfile"))'```
 ### View ListBuckets Activity [T1526](https://attack.mitre.org/techniques/T1526/)
 1. Query CloudTrail for ListBuckets within AWS CLI. 
 	- Command to use: ```aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=ListBuckets --query 'Events[].{EventId:EventId,EventName:EventName,EventTime:EventTime,Username:Username}' --output table```
