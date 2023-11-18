@@ -2,6 +2,24 @@
 
 ## Host
 
+### Detect Potential Financial Theft [T1657](https://attack.mitre.org/techniques/T1657/)
+1. Query Amazon Macie for alerts the GUI. 
+
+### Detect Potential PII [No TTP]
+1. Query Amazon Macie for alerts within the GUI. 
+2. View CloudWatch Logs Alerts for PII within data. 
+### Detect Cloud Compute Infra Modification [T1578](https://attack.mitre.org/techniques/T1578/)
+1. Query AWS Config with the specific security group. 
+	- Commands to run: 
+		- ```INSTANCE_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=[Role] --query Reservations[].Instances[].InstanceId --output text)```
+		- ```aws configservice get-resource-config-history --resource-type AWS::EC2::Instance --resource-id $INSTANCE_ID]```
+2. Use the Resource Timeline within AWS Config GUI. 
+### Detect Non Standard Port Listening [T1571](https://attack.mitre.org/techniques/T1571/)
+1. Query the security group of the asset and find the ports available. 
+	- Commands to run: 
+		- ```SG_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values="SherlocksBlog" --query Reservations[].Instances[].SecurityGroups[0].GroupId --output text)```
+		- ```aws ec2 describe-security-groups --group-ids $SG_ID | jq '.SecurityGroups[].IpPermissions[] | {FromPort, ToPort, IpProtocol}'```
+2. Review AWS Inspector Network Reachability results for the specific instance. 
 ### Detect Crypto Miner [T1496](https://attack.mitre.org/techniques/T1496/)
 1. View the Kubernetes Cluster CPU level within the CloudWatch GUI Alarms. 
 2. Query the CloudWatch Logs Inisights for alarms related to crypto miners.
@@ -85,8 +103,21 @@
 2. Query AWS CloudTrail with the KeyID as the AWS access key within the GUI. 
 ### View Deployed Containers [T1610](https://attack.mitre.org/techniques/T1610/)
 1. Query with [kai](https://github.com/anchore/k8s-inventory) to inventory containers within the environment. 
+2. Query AWS Config GUI within the Resources section. 
 ## Network
 
+### Detect Web Fuzzing [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Query CloudWatch Log Insights for file or directory access. 
+	- Command to run: ```QUERY_ID=$(aws logs start-query --start-time $(date -d '-3 hours' "+%s") --end-time $(date "+%s") --query-string 'fields integrationErrorMessage | filter integrationErrorMessage ~= "No such file or directory" and sourceIp == "'[SuspectIPs]'"' --log-group-name [LogGroupName] --query 'queryId' --output text)```
+	- ```aws logs get-query-results --query-id $QUERY_ID```
+
+### Detect Container API Unsecured Credentials Access [T1552.007](https://attack.mitre.org/techniques/T1552/007/)
+1. Query CloudWatch Log Insights for access to a specific log stream and focus on the URI. 
+	- Commands to run: 
+		- ```aws logs start-query --start-time $(date -d "30 mins ago" +"%s") --end-time $(date +"%s") --log-group-name $LOG_GROUP --query-string 'fields @message | filter @logStream ~= "kubernetes-dashboard"' --output text)```
+		- ```aws logs get-query-results --query-id $QUERY_ID | jq -r '.results[][] | select(.value | contains("aws-secrets"))'```
+2. Query CloudWatch Log Insights via the GUI and a specific log group. 
+	- Query to run: ```fields integrationErrorMessage | filter integrationErrorMessage ~= "No such file or directory"```
 ### View User Agents
 1. Use ```s3logparse.py``` found [here](https://www.google.com/search?q=s3logparse+py&oq=s3logparse+py&aqs=chrome..69i57j33i299.2618j0j7&sourceid=chrome&ie=UTF-8). 
 	- Command to use is ```s3logparse.py useragent [useragent]```.
@@ -104,6 +135,12 @@
 	- Commands to use: 
 		- ```QUERY_ID=$(aws athena start-query-execution --query-string "SELECT sourceaddress, count(*) as total FROM vpc_flow_logs WHERE (destinationport = 22) group by distinct sourceaddress ORDER by total desc" --query-execution-context Database=[DatabaseLogs] --work-group [WorkGroup] --query QueryExecutionId --output text)```
 		- ```aws athena get-query-results --query-execution-id $QUERY_ID --query ResultSet```
+5. Use AWS GuardDuty in the GUI and look for ``` UnauthorizedAccess:EC2/SSHBruteForce``` findings. 
+6. Use AWS GuardDuty via the CLI with the appropriate detector ID.
+	- Commands to run: 
+		- ```DETECTOR_ID=$(aws guardduty list-detectors --query DetectorIds[0] --output text)```
+		- ```aws guardduty list-findings --detector-id $DETECTOR_ID --finding-criteria '{"Criterion": {"type": {"Eq":["UnauthorizedAccess:EC2/SSHBruteForce"]}}}'```
+		- ```aws guardduty get-findings --detector-id $DETECTOR_ID --finding-ids $FINDING_IDS --query Findings[0]```
 ### Detect Non Standard Port Interactions [T1571](https://attack.mitre.org/techniques/T1571/)
 1. Query Athena within the GUI looking at VPC Flow Logs.
 	- Query to use: ```SELECT destinationport, count(*) as total FROM vpc_flow_logs WHERE destinationport < 1024 AND action='ACCEPT' group by distinct destinationport ORDER by total ASC LIMIT 50```
@@ -117,6 +154,11 @@
 	- Commands to use: 
 		- ```aws logs start-query --log-group-name [LogGroupName] --start-time [EpochTime] --end-time [EpochTime] --query-string "filter dstPort < 1024 and action='ACCEPT' | stats  count(*) as total by dstPort | sort total desc | limit 50"```
 		- ```aws logs get-query-results --query-id [query-id]```
+5. Query the security group of the asset and find the ports available. 
+	- Commands to run: 
+		- ```SG_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values="SherlocksBlog" --query Reservations[].Instances[].SecurityGroups[0].GroupId --output text)```
+		- ```aws ec2 describe-security-groups --group-ids $SG_ID | jq '.SecurityGroups[].IpPermissions[] | {FromPort, ToPort, IpProtocol}'```
+6. Review AWS Inspector Network Reachability results for the specific instance. 
 
 ### Detect Scanning/Recon [T1595](https://attack.mitre.org/techniques/T1595/) [T1590](https://attack.mitre.org/techniques/T1590/)
 1. Query Athena within the GUI looking at VPC Flow Logs.
@@ -165,6 +207,10 @@
 		- ```aws logs get-query-results --query-id $QUERY_ID```
 2. Query CloudWatch Log Insights within the GUI with the correct log group of application logs. 
 	- Query to use: ```fields log | filter kubernetes.container_name == "kubernetes-dashboard" and log ~= "Incoming HTTP" and log ~= "appdeploymentfromfile"```
+
+### Detect Access EC2 Metadata Service Vuln [T1552.005](https://attack.mitre.org/techniques/T1552/005/)
+1. Use AWS Inspector results to view IMDSv2, not Version 1 interactions. 
+2. 
 # Azure 
 
 ## Host
