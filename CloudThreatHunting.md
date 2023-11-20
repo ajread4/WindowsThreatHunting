@@ -214,7 +214,74 @@
 
 ## Host
 
-### Identify Reverse Shell Activity 
+### Identify Suspicious Cloud Accounts [T1078.004](https://attack.mitre.org/techniques/T1078/004/)
+1. Query the Azure Log Analytics Workspace via the GUI with the BehaviorAnalytics table. 
+	- Query to run: ```BehaviorAnalytics | where ActivityInsights.CountryUncommonlyConnectedFromAmongPeers == True | project TimeGenerated, ActivityType, UserName, SourceIPAddress, ActivityInsights```
+2. Query the Azure Log Analytics Workspace via the CLI with the BehaviorAnalytics table. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'BehaviorAnalytics | where ActivityInsights.CountryUncommonlyConnectedFromAmongPeers == True | project TimeGenerated, ActivityType, UserName, SourceIPAddress, ActivityInsights'```
+### Inventory Roles [No TTP]
+1. Query the Azure CLI. 
+	- Command to run: ```az role assignment list --all --query '[].{UPN:principalName,RoleDef:roleDefinitionName,Scope:scope}' --output table```
+
+### Identify User Groups [T1078.002](https://attack.mitre.org/techniques/T1078/002/)
+1. View information within Azure AD Users within the Portal GUI. 
+2. View changes of AD within AuditLogs of the Azure Log Analytics Workspace. 
+
+### Identify Spam Messages [T1566](https://attack.mitre.org/techniques/T1566/)
+1. View spam filtering within the Microsoft 365 Admin Center. 
+
+### Vulnerability Assessment of VMs [No TTP]
+1. Query Microsoft Defender for Cloud with Qualys for vulnerability's. 
+2. Query Azure Log Analytics Workspace within the ```SecurityBaseline``` table. 
+3. Use the Microsoft Defender CLI with ```az security alert list```. 
+
+### Vulnerability Assessment of Containers [No TTP]
+1. Query Microsoft Defender for Cloud with Qualys with Container Image Scanning capability. 
+2. Use the Microsoft Defender CLI with ```az security alert list```. 
+
+### View File Retrieval [No TTP]
+1. Query the Azure Log Analytics Workspace via the GUI. 
+	- Query to run: ```StorageBlobLogs | where OperationName =="GetBlob" | project TimeGenerated,AccountName,CallerIpAddress, Uri```
+2. Query the Azure Log Analytics Workspace via the CLI. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where OperationName =="GetBlob" | project TimeGenerated,AccountName,CallerIpAddress, Uri'```
+3. Query for other log sources within Azure Log Analytics Workspace to include: ```StorageFileLogs```, ```StorageTableLogs```, and ```StorageQueueLogs```. 
+
+### View File Creation Events [No TTP]
+1. Query the Azure Log Analytics Workspace via the GUI. 
+	- Query to run: ```StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri```
+2. Query the Azure Log Analytics Workspace via the CLI. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri'```
+
+### View Deployed Containers [T1610](https://attack.mitre.org/techniques/T1610/)
+1. Query the Azure Log Analytics Workspace with the specific table. 
+	- Query to run: ```ContainerInstanceLog_CL | project TimeGenerated, ContainerGroup_s, Message```
+2. Query the Azure Log Analytics Workspace for the following tables: ```ContainerInventory```, ```ContainerNodeInventory```, ```InsightsMetricss```, ```KubeEvents```, ```KubeMonAgentEvents```, ```KubeNodeInventory```, ```KubeServices```, or ```ContainerLog```. 
+
+### Identify Cloud Instance Creation [T1578.002](https://attack.mitre.org/techniques/T1578/002/)
+1. Review alerts within Azure Activity Log GUI for "Microsoft.Compute/virtualMachines/create" operations.
+2. Query the Azure Log Analytics GUI for VM creation. 
+
+### Identify Cloud Instance Deletion [T1578.003](https://attack.mitre.org/techniques/T1578/003/)
+1. Review alerts within Azure Activity Log GUI for "Microsoft.Compute/virtualMachines/delete" operations. 
+2. Query Azure Activity Log for delete operations. 
+	- Command to run: ```az monitor activity-log list --offset 1h --query "[?authorization.action=='Microsoft.Compute/virtualMachines/delete’].{Time:eventTimestamp,Caller:caller,SourceIP:claims.ipaddr}" --output table```
+3. Query Azure Log Analytics GUI for VM deletion. 
+	- Query to run: ```AzureActivity | extend Action= extractjson("$.action", Authorization) | where Action == "Microsoft.Compute/virtualMachines/delete" | project TimeGenerated, Action, Caller, CallerIpAddress | sort by TimeGenerated desc```
+4. Query Azure Log Analytics via the CLI for VM deletion. 
+	- Commands  to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureActivity | extend Action= extractjson("$.action", Authorization) | where Action == "Microsoft.Compute/virtualMachines/delete" | project TimeGenerated, Action, Caller, CallerIpAddress | sort by TimeGenerated desc'```
+
+### Identify Cloud Instance Updates [T1578](https://attack.mitre.org/techniques/T1578)
+1. Review alerts within Azure Activity Log GUI for instance updates.
+2. Query the Azure Log Analytics GUI for VM updates. 
+### Identify Reverse Shell Activity [T1059](https://attack.mitre.org/techniques/T1059/)
 1. Query the Log Analytics Workspace for SecurityAlert. 
 	- Query to run: ```SecurityAlert | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | where DisplayName == "Possible reverse shell" | take 1 | extend FilePath = extract_json("$.File Path", ExtendedProperties) | extend FileName = extract_json("$.File Name", ExtendedProperties) | extend FileHash = extract_json("$.File Sha256", ExtendedProperties) | extend UserName = extract_json("$.User Name", ExtendedProperties) | extend MachineName = extract_json("$.Machine Name", ExtendedProperties) | project TimeGenerated, FilePath, FileName, FileHash, UserName, MachineName```
 2. Query the Log Analytics Workspace via the CLI. 
@@ -222,6 +289,7 @@
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SecurityAlert | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | where DisplayName == "Possible reverse shell" | take 1 | extend FilePath = extract_json("$.File Path", ExtendedProperties) | extend FileName = extract_json("$.File Name", ExtendedProperties) | extend FileHash = extract_json("$.File Sha256", ExtendedProperties) | extend UserName = extract_json("$.User Name", ExtendedProperties) | extend MachineName = extract_json("$.Machine Name", ExtendedProperties) | project TimeGenerated, FilePath, FileName, FileHash, UserName, MachineName'```
 3. Review alerts in Microsoft Defender for Cloud in the GUI. 
+4. Use the Microsoft Defender CLI with ```az security alert list```. 
 
 ### Identify Data Exfiltration [T1530](https://attack.mitre.org/techniques/T1530/)
 1. Query the Log Analytics Workspace in the GUI for StorageBlobLogs. 
@@ -230,6 +298,19 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00"))'```
+3. Query the Log Analytics Workspace in the GUI for StorageBlobLogs. 
+	- Query to run: ```StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend SourceIP = splitCallerIpAddress,":")[0] | summarize dataOut = sum(ResponseBodySize) by tostring(SourceIP), OperationName | sort by dataOut```
+4. Query the Log Analytics Workspace through the CLI. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend SourceIP = split(CallerIpAddress,":")[0] | summarize dataOut = sum(ResponseBodySize) by tostring(SourceIP), OperationName | sort by dataOut'```
+### Identify Data Staging [T1074.002](https://attack.mitre.org/techniques/T1074/002/)
+1. Query the Log Analytics Workspace in the GUI for StorageBlobLogs. 
+	- Query to run: ```StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend SourceIP = split(CallerIpAddress,":")[0] | summarize dataOut = sum(ResponseBodySize) by tostring(SourceIP), OperationName | sort by dataOut```
+2. Query the Log Analytics Workspace through the CLI. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend SourceIP = split(CallerIpAddress,":")[0] | summarize dataIn = sum(ResponseBodySize) by tostring(SourceIP), OperationName | sort by dataIn'```
 ### Detect Command Execution [T1059](https://attack.mitre.org/techniques/T1059/)
 1. Query the Log Analytics Workspace in the GUI for AzureActivity. 
 	- Query to run: ```AzureActivity | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | project TimeGenerated,  OperationNameValue, Level, Caller```
@@ -253,6 +334,17 @@
 ### Detect SSH Brute Force [T1110](https://attack.mitre.org/techniques/T1110/)
 1. Review alerts for "Failed SSH brute force attack" within Microsoft Defender for Cloud alerts. 
 2. Review alerts for "SSH - Potential Brute Force" in Microsoft Sentinel. 
+3. Use Azure Network Watcher Packet Capture capability. 
+4. Query Azure Log Analytics Workspace with the configured authentication log from ```/var/log/secure``` sent via the agent. 
+	- Query to run: ```LinuxAuth_CL | where RawData contains "Failed password" or RawData contains "Invalid user" | project TimeGenerated, RawData```
+5. View Sign-in logs from Azure Active Directory within the web GUI. 
+6. Use the Microsoft Defender CLI with ```az security alert list```. 
+7. Query Log Analytics Workspace in the GUI with the SecurityAlert table. 
+	- Query to run: ```SecurityAlert | where Tactics == "CredentialAccess" | extend MaliciousIP = split(split(tostring(Entities),"Address")[1],'"')[2] | project TimeGenerated, DisplayName, MaliciousIP | sort by TimeGenerated asc```
+8. Query Log Analytics Workspace within the CLI with the SecurityAlert table. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SecurityAlert | where Tactics == "CredentialAccess" | extend MaliciousIP = split(split(tostring(Entities),"Address")[1],'"')[2] | project TimeGenerated, DisplayName, MaliciousIP | sort by TimeGenerated asc'```
 
 ### Detect Sign in Activity [T1078.004](https://attack.mitre.org/techniques/T1078/004/) [T1110.001](https://attack.mitre.org/techniques/T1110/001/)
 1. Query the Log Analytics Workspace in the GUI for all successful logins. 
@@ -261,6 +353,11 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SigninLogs | extend AuthenticationMethod = extractjson("$.[0].authenticationMethod", AuthenticationDetails) | extend Succeeded = extractjson("$.[0].succeeded", AuthenticationDetails) | project TimeGenerated, AuthenticationMethod, Succeeded, IPAddress, UserAgent'```
+3. Use Azure Network Watcher Packet Capture capability. 
+4. Query Azure Log Analytics Workspace with the configured authentication log from ```/var/log/secure``` sent via the agent. 
+	- Query to run: ```LinuxAuth_CL | project TimeGenerated, RawData```
+5. View Risky sign-ins from Azure Active Directory. 
+6. View Sign-in logs from Azure Active Directory within the web GUI. 
 
 ### Detect Failed Password Attempts [T1110.001](https://attack.mitre.org/techniques/T1110/001/)
 1. Query the Log Analytics Workspace in the GUI for failed login attempts with a password. 
@@ -272,7 +369,16 @@
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SigninLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend AuthenticationMethod = extractjson("$.[0].authenticationMethod", AuthenticationDetails) | extend Succeeded = extractjson("$.[0].succeeded", AuthenticationDetails) | where Succeeded == "false" and AuthenticationMethod == "Password" | summarize count() by IPAddress'```
 4. Review alerts within Microsoft Sentinel for "Password spray attack against Azure AD application."
-
+5. Use Azure Network Watcher Packet Capture capability. 
+6. Query Azure Log Analytics Workspace with the configured authentication log from ```/var/log/secure``` sent via the agent. 
+	- Query to run: ```LinuxAuth_CL | where RawData contains "Failed password" or RawData contains "Invalid user" | project TimeGenerated, RawData```
+7. View Sign-in logs from Azure Active Directory within the web GUI. 
+8. Query Log Analytics Workspace in the GUI with the SecurityAlert table. 
+	- Query to run: ```SecurityAlert | where Tactics == "CredentialAccess" | extend MaliciousIP = split(split(tostring(Entities),"Address")[1],'"')[2] | project TimeGenerated, DisplayName, MaliciousIP | sort by TimeGenerated asc```
+9. Query Log Analytics Workspace within the CLI with the SecurityAlert table. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SecurityAlert | where Tactics == "CredentialAccess" | extend MaliciousIP = split(split(tostring(Entities),"Address")[1],'"')[2] | project TimeGenerated, DisplayName, MaliciousIP | sort by TimeGenerated asc'```
 ### Identify Network Scanning [T1046]()
 1. Query Log Analytics Workspace in the GUI with the AzureNetworkAnalytics_CL. 
 	- Query to run: ```AzureNetworkAnalytics_CL | where FlowStartTime_t between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | summarize Count = count() by PublicIPs_s```
@@ -280,6 +386,7 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureNetworkAnalytics_CL | where FlowStartTime_t between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | summarize Count = count() by PublicIPs_s'```
+3. Use Azure Network Watcher Packet Capture capability. 
 ### Identify Network Flows [No TTP]
 1. Query Log Analytics Workspace in the GUI with the AzureNetworkAnalytics_CL focusing on ingress traffic from specific IP. 
 	- Query to run: ```AzureNetworkAnalytics_CL | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) and PublicIPs_s contains "40.70.212.199" and FlowDirection_s == "I" and FlowStatus_s == "A" | distinct L7Protocol_s, L4Protocol_s, DestPort_d```
@@ -293,3 +400,23 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureNetworkAnalytics_CL | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) and PublicIPs_s contains "40.70.212.199" and FlowDirection_s == "O" and FlowStatus_s == "A" | distinct L7Protocol_s, L4Protocol_s, DestPort_d'```
+5. Use Azure Network Watcher Packet Capture capability. 
+
+### Identify Suspicious Email Traffic [T1566](https://attack.mitre.org/techniques/T1566/)
+1. View Mail Flow within the Microsoft 365 Exchange Admin Center. 
+
+### Identify Database Scanning [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Query Log Analytics Workspace in the GUI with the AzureDiagnostics table. 
+	- Query to run: ```AzureDiagnostics | where TimeGenerated between(datetime("10/29/2021 2:45 PM").. datetime("10/29/2021 3:00 PM")) and Category == "SQLSecurityAuditEvents" and action_id_s == "BCM " | extend statementLength = strlen(statement_s) | sort by statementLength | project client_ip_s, statementLength, statement_s```
+2. Query Log Analytics Workspace within the CLI with the AzureDiagnostics table. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureDiagnostics | where TimeGenerated between(datetime("10/29/2021 2:45 PM").. datetime("10/29/2021 3:00 PM")) and Category == "SQLSecurityAuditEvents" and action_id_s == "BCM " | extend statementLength = strlen(statement_s) | sort by statementLength | project client_ip_s, statementLength, statement_s'```
+
+### Identify C2 Traffic [T1571](https://attack.mitre.org/techniques/T1571/)
+1. Query Log Analytics Workspace in the GUI with the AzureNetworkAnalytics_CL table. 
+	- Query to run: ```AzureNetworkAnalytics_CL | where TimeGenerated between(datetime("9/27/2021 00:00:00") ..datetime("9/27/2021 23:59:59")) and PublicIPs_s contains "3.95.15.41" and FlowDirection_s == "O" and DestPort_d == 443 and L4Protocol_s == "T" | summarize Count = count() by bin(FlowStartTime_t, 1m) | project Count, FlowStartTime_t | render columnchart```
+2. Query Log Analytics Workspace within the CLI with the AzureNetworkAnalytics_CL table. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureNetworkAnalytics_CL | where TimeGenerated between(datetime("9/27/2021 00:00:00") ..datetime("9/27/2021 23:59:59")) and PublicIPs_s contains "3.95.15.41" and FlowDirection_s == "O" and DestPort_d == 443 and L4Protocol_s == "T" | summarize Count = count() by bin(FlowStartTime_t, 1m) | project Count, FlowStartTime_t | render columnchart'```
