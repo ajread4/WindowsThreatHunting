@@ -1,3 +1,22 @@
+
+# Examine PDFs [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
+1. Use ```pdfid.py``` to summarize risky aspects of the file. 
+2. Use ```pdf-parser.py``` to search for objects within PDFs. 
+3. Use ```peepdf.py``` to summarize aspects of file and search for objects. 
+4. Use ```swf_mastah.py``` to extract Flash from PDF files. 
+5. Use [origami-pdf](https://github.com/cogent/origami-pdf) to analyze PDFs. 
+6. 
+# De-obfuscate Code [T1027.010](https://attack.mitre.org/techniques/T1027/010/)
+1. Beautify the script using Notepad++ and JSTool plugins such as JSMin and JSFormat. 
+2. Use [SpiderMonkey](https://spidermonkey.dev/) to analyze JavaScript and VBScript. 
+3. Use [CScript](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cscript) to analyze JavaScript and VBScript. 
+4. Use [box-js](https://github.com/CapacitorSet/box-js) within the command line to analyze JavaScript. 
+5. Use ```base64dump.py``` to decode Base64 strings. 
+# View Embedded Strings [T1024](https://attack.mitre.org/techniques/T1204/)
+1. Run ```pestr``` on a linux operating system to view strings on an executable. 
+2. Run ```strings -a``` on a linux OS to view strings on an executable. 
+3. Run ```strings --encoding=l``` on a lnux OS to view strings of an executable. 
+4. Place the file in [PeStudio](https://www.winitor.com/download). 
 # Identify WMI Activity [T1047](https://attack.mitre.org/techniques/T1047/)
 1. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe``` on source machine. 
 2. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe```, ```scrons.exe```, ```mofcomp.exe```, or ```wmiprvse.exe``` on target machine. 
@@ -14,8 +33,8 @@
 8. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4778/4779 for logon source and username. 
 9. Use ```eventvwr.msc``` with Microsoft-Windows-RemoteDesktopServices-RdpCoreTS%4Operational for eventid 131 and 98 for connection attempt IPs and successful connections. 
 10. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-RDPClient%4Operational for eventid 1149 with source IP and Logon username. 
-11. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational for eventid 21, 22, 25, and 41 for source IP or logon username. 
-12. Focus on ShimCache and AmCache.hve with ```rdpclip.exe``` or ```tstheme.exe``` for RDP destination machine. 
+14. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational for eventid 21, 22, 25, and 41 for source IP or logon username. 
+15. Focus on ShimCache and AmCache.hve with ```rdpclip.exe``` or ```tstheme.exe``` for RDP destination machine. 
 
 # View Change to Logging [T1070.001](https://attack.mitre.org/techniques/T1070/001/)
 1. Use ```eventvwr.msc``` with Windows System Event logs 4719. 
@@ -27,8 +46,15 @@
 4. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[EventID=4725 or EventID=4722 or EventID=4723 or EventID=4724 or EventID=4726 or EventID=4767)]]```
 
-# Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/)
+# Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
+2. Use ```olevba.py``` to examine metadata. 
+3. Unzip the docx to deflate media and other sections of the document. 
+4. Use ```oledump.py``` to view the macros within a document. 
+5. View macros within p-code called [pcodedmp.py](https://github.com/bontchev/pcodedmp). 
+
+# Examine RTF Documents [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
+1. Use ```rtfdump.py``` to examine the file. 
 
 #  Determine Persistence at Startup in Registry [T1547.001](https://attack.mitre.org/techniques/T1547/001/)
 1. View registry at ```HKLM\Software\Microsoft\Windows\CurrentVersion\Runonce```. 
@@ -71,6 +97,21 @@
 	- Command to use ```PECmd.exe -f [prefetch_file]```
 9. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
 10. View the Amcache or recentfile cache for data storage during process creation at ```C:\Windows\AppCompat\Programs\Amcache.hve```.
+11. Run ```pestr``` on a linux operating system to view strings on an executable. 
+12. Run ```strings -a``` on a linux OS to view strings on an executable. 
+13. Run ```strings --encoding=l``` on a lnux OS to view strings of an executable. 
+14. Place the file in [PeStudio](https://www.winitor.com/download). 
+15. Run ```peframe``` on a linux machine to view imports and other file properties. 
+16. Place the file in [DetectItEasy](https://github.com/horsicq/Detect-It-Easy). 
+17. Place the file in [ExeInfoPE](http://www.exeinfo.byethost18.com/?i=1). 
+18. Analyze the file with [signsrch](https://aluigi.altervista.org/mytoolz.htm). 
+19. Analyze the file with [pescan](https://tzworks.com/prototype_page.php?proto_id=15). 
+20. Analyze the file with [MASTIFF](https://git.korelogic.com/mastiff.git/). 
+21. Analyze the file with [Exiftool](https://exiftool.org/). 
+22. Analyze the file with [TrID](https://mark0.net/soft-trid-e.html). 
+23. Analyze the file with [Viper](https://github.com/viper-framework/viper). 
+24. Analyze the file with [PortEx](https://github.com/struppigel/PortEx).
+25. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -161,6 +202,7 @@
 15. View the Windows Background Activity Monitor at ```SYSTEM\CurrentControlSet\Services\bam\UserSettings\{SID}``` or ```SYSTEM\CurrentControlSet\Services\dam\UserSettings\{SID}```
 16. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
 17. View the RunMRU at ```NTUser.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU``` for Start-> Run execution. 
+18. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
@@ -181,7 +223,7 @@
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
 	- Command to use is ```Get-WinEvent -Path <Path to Log> -FilterXPath '*/System/EventID=1'```
 2. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 1. 
-3. Use ```Get-ScheduledTask``` within Powershell. 
+3. Use ```Get-ScheduledTask``` within Powershell. https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
 	- Command to use is ```Get-ScheduledTask -TaskName [TaskName]```
 4. Use ```Export-ScheduledTask``` within Powershell. 
 	- Command to use is ```Get-ScheduledTask -TaskName [Name]```. 
@@ -191,7 +233,6 @@
 8. Use ```eventvwr.msc``` with Windows Security Event logs 4701. 
 9. Identify processes of ```at.exe``` or ```schtasks.exe``` on the source machine. 
 10. View registry at ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks``` or ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree``` on target machine to find scheduled tasks. 
-10. 
 
 #  Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. Use ```procmon``` within SysInternals
@@ -202,6 +243,7 @@
 4. Use ```osquery``` on the Windows Command line. 
 	- Command to use in interactive mode is ```select sid,path from userassist;```. 
 5. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
+6. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
 
 # Explore File Read Activity [No TTP]
 1. Use ```procmon``` within SysInternals
@@ -234,7 +276,7 @@
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
 
-### View Skype History [No TTP]
+# View Skype History [No TTP]
 1. View skype history at ```C\%USERPROFILE%\AppData\Roaming\Skype\[skypename]```.
 
 # View Firefox History [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
@@ -290,8 +332,6 @@
 1. Use ```PECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```PECmd.exe -f [prefetch_file]```
 2. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
-
-
 # Parse Windows 10 Timeline [No TTP]
 1. Use ```WxTCmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) on Windows Command line. 
 	- Command to use ```WxTCmd.exe -f [timeline_file]```
@@ -343,15 +383,11 @@
 	- Command would be ```Get-WinEvent -LogName Security -FilterXPath '*/System/EventID=4720 and */EventData/Data[@Name="TargetUserName"]="[UserName]"'```
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 
-### Determine PowerShell Down Grade Attack [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
+# Determine PowerShell Down Grade Attack [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```Get-WinEvent``` using PowerShell. 
-	- Command would be ```Get-WinEvent -LogName "Windows PowerShell" |
-    Where-Object Id -eq 400 |
-    Foreach-Object {
-        $version = [Version] (
+	- Command would be ```Get-WinEvent -LogName "Windows PowerShell" | Where-Object Id -eq 400 | Foreach-Object {$version = [Version] (
             $_.Message -replace '(?s).*EngineVersion=([\d\.]+)*.*','$1')
-        if($version -lt ([Version] "5.0")) { $_ }
-}```
+        if($version -lt ([Version] "5.0")) { $_ }}```
 2. User ```eventvwr.msc``` on a Windows system and filter for event ID 400 within the PowerShell logs. 
 	- ```EngineVersion``` will have a different number than other PowerShell logs 
 
@@ -359,7 +395,6 @@
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 104 within the Microsoft-Windows-Eventlog source. 
 2. Use ```eventvwr.msc``` with Windows Security Event logs 517. 
 3. Use ```eventvwr.msc``` with Windows Security Event logs 1102 to view Audit log clearing. 
-4. 
 
 # Explore Group Enumeration [T1069](https://attack.mitre.org/techniques/T1069)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 4799 within Security event logs. 
@@ -378,6 +413,7 @@
 	- Command to use is ```Get-WinEvent -Path <Path to Log> -FilterXPath '*/System/EventID=10 and */EventData/Data[@Name="TargetImage"] and */EventData/Data="C:\Windows\system32\lsass.exe"'```
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 3. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
+4. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
 
 # Find Common RAT Connections. [T1021](https://attack.mitre.org/techniques/T1021)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -457,4 +493,3 @@
 14. Use ```eventvwr.msc``` with Windows Security Event logs 4771 failed ticket logon. 
 15. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[(EventID=4624 or EventID=4625)]]```
-
