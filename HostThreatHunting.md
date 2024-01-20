@@ -5,7 +5,8 @@
 3. Use ```peepdf.py``` to summarize aspects of file and search for objects. 
 4. Use ```swf_mastah.py``` to extract Flash from PDF files. 
 5. Use [origami-pdf](https://github.com/cogent/origami-pdf) to analyze PDFs. 
-6. 
+
+
 # De-obfuscate Code [T1027.010](https://attack.mitre.org/techniques/T1027/010/)
 1. Beautify the script using Notepad++ and JSTool plugins such as JSMin and JSFormat. 
 2. Use [SpiderMonkey](https://spidermonkey.dev/) to analyze JavaScript and VBScript. 
@@ -17,10 +18,16 @@
 2. Run ```strings -a``` on a linux OS to view strings on an executable. 
 3. Run ```strings --encoding=l``` on a lnux OS to view strings of an executable. 
 4. Place the file in [PeStudio](https://www.winitor.com/download). 
+
 # Identify WMI Activity [T1047](https://attack.mitre.org/techniques/T1047/)
 1. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe``` on source machine. 
 2. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe```, ```scrons.exe```, ```mofcomp.exe```, or ```wmiprvse.exe``` on target machine. 
 3. Use ```eventvwr.msc``` with Microsoft-Windows-WMI-Activity%4Operational for event ID 5857, 5860, and 5861 for ```wmiprvse``` execution. 
+4. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4688. 
+5. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648.
+6. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 20. 
+7. Look for MOF files within ```C:\Windows\System32\wbem\AutoRecover``` or ```C:\Windows\System32\wbem\mofcomp.exe```. 
+8. Look for MOF files in registry ```HKLM\SOFTWARE\Microsoft\Wbem\CIMON```. 
 
 # Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/) [T1210](https://attack.mitre.org/techniques/T1210/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648. 
@@ -38,13 +45,18 @@
 
 # View Change to Logging [T1070.001](https://attack.mitre.org/techniques/T1070/001/)
 1. Use ```eventvwr.msc``` with Windows System Event logs 4719. 
+2. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
+```, or ```Remove-EventLog -LogName System```. 
 
-# View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/)
+# View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/) [T1070](https://attack.mitre.org/techniques/T1070/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
 2. Use ```eventvwr.msc``` with Windows Security Event logs event id 4735 to view local group changes. 
 3. Use ```eventvwr.msc``` with Windows Security Event logs event id 4738 to view local password change. 
 4. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[EventID=4725 or EventID=4722 or EventID=4723 or EventID=4724 or EventID=4726 or EventID=4767)]]```
+5. Use ```eventvwr.msc``` with Windows Security Event logs event id 4726 to remove a user account. 
+6. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
+```, or ```Remove-EventLog -LogName System```. 
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
@@ -56,7 +68,7 @@
 # Examine RTF Documents [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use ```rtfdump.py``` to examine the file. 
 
-#  Determine Persistence at Startup in Registry [T1547.001](https://attack.mitre.org/techniques/T1547/001/)
+# Determine Persistence at Startup in Registry [T1547.001](https://attack.mitre.org/techniques/T1547/001/)
 1. View registry at ```HKLM\Software\Microsoft\Windows\CurrentVersion\Runonce```. 
 2. View registry at ```HKLM\Software\Microsoft\Windows\CurrentVersion\policies\Explorer\Run```.
 3. View registry at ```HKLM\Software\Microsoft\Windows\CurrentVersion\Run```. 
@@ -85,7 +97,7 @@
 5. View files access from IE at ```%USERPROFILE%\AppData\Local\Microsoft\Windows\WebCache\WebCacheV*.dat```. 
 6. Use [Rifiuti2](https://github.com/abelcheung/rifiuti2) to exmaine the Recycle Bin. 
 
-# Examine Executables [T1547.004](https://attack.mitre.org/techniques/T1547/004/) [T1059.006](https://attack.mitre.org/techniques/T1059/006/) [T15559.001]([T1070.004](https://attack.mitre.org/techniques/T1559/001/)) [T1027.004]([T1070.004](https://attack.mitre.org/techniques/T1027/004/)) [T1027.004]([T1070.009](https://attack.mitre.org/techniques/T1027/009/)) [T1055.002](https://attack.mitre.org/techniques/T1055/002)
+# Examine Executables [T1547.004](https://attack.mitre.org/techniques/T1547/004/) [T1059.006](https://attack.mitre.org/techniques/T1059/006/) [T1559.001]([T1070.004](https://attack.mitre.org/techniques/T1559/001/)) [T1027.004]([T1070.004](https://attack.mitre.org/techniques/T1027/004/)) [T1027.004]([T1070.009](https://attack.mitre.org/techniques/T1027/009/)) [T1055.002](https://attack.mitre.org/techniques/T1055/002)
 1. View the registry at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count``` where the GUID is specific for the OS. 
 2. View the Windows Background Activity Monitor at ```SYSTEM\CurrentControlSet\Services\bam\UserSettings\{SID}``` or ```SYSTEM\CurrentControlSet\Services\dam\UserSettings\{SID}```
 3. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
@@ -177,7 +189,7 @@
 1. Use ```procdump``` within Sysinternals 
 	- ```procdump -accepteula```
 
-# Explore Processes [T1059](https://attack.mitre.org/techniques/T1059)
+# Explore Processes [T1059](https://attack.mitre.org/techniques/T1059) [T1055](https://attack.mitre.org/techniques/T1055/)
 1. Use ```procexp``` within Sysinternals
 	- ```procexp -accepteula```
 2. Use [Process Hacker](https://processhacker.sourceforge.io/)
@@ -203,6 +215,10 @@
 16. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
 17. View the RunMRU at ```NTUser.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU``` for Start-> Run execution. 
 18. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
+19. Use ```eventvwr.msc``` with Windows Security Event logs 4663. 
+20. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 10.
+21. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
+22. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8.   
 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
@@ -218,6 +234,8 @@
 7. Use ```Get-ItemProperty``` with the specific registry key in Powershell.
 8. Use [Regshot](https://github.com/Seabreg/Regshot) to compare initial registry with final registry post execution. 
 9. Use [RegRipper](https://github.com/keydet89/RegRipper3.0). 
+10. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
+Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order```. 
 
 # Explore Scheduled Tasks [T1036.004](https://attack.mitre.org/techniques/T136/004) [T1053.005](https://attack.mitre.org/techniques/T1053/005)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -234,7 +252,7 @@
 9. Identify processes of ```at.exe``` or ```schtasks.exe``` on the source machine. 
 10. View registry at ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks``` or ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree``` on target machine to find scheduled tasks. 
 
-#  Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
+# Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. Use ```procmon``` within SysInternals
 	- ```procmon -accepteula```
 2. Use ```Get-WinEvent``` with Sysmon Event Logs and look at the call trace. 
@@ -244,6 +262,11 @@
 	- Command to use in interactive mode is ```select sid,path from userassist;```. 
 5. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 6. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
+7. Examine changes in DLLs residing in ```C:\Windows\System32```. 
+8. Use ```eventvwr.msc``` with Windows Security Event logs 4663. 
+9. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 10.
+10. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
+11. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
 
 # Explore File Read Activity [No TTP]
 1. Use ```procmon``` within SysInternals
@@ -263,7 +286,6 @@
 11. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
 12. View files access from IE at ```%USERPROFILE%\AppData\Local\Microsoft\Windows\WebCache\WebCacheV*.dat```. 
 
-
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
 2. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -272,6 +294,7 @@
 5. View Firefox user account at ```%USERPROFILE%\AppData\Roaming\Mozilla\Firefox\Profiles\[randomtext].default\places.sqlite```.
 6. View chrome user account at ```%USERPROFILE%\AppData\Local\Google\Chrome\UserData\Default\History```. 
 7. View firefox download history at ```%USERPROFILE%\AppData\Roaming\Mozilla\Firefox\Profiles\[randomtext].default\downloads.sqlite```.
+8. View user downloads within ```C:\User\*\Downloads```. 
 
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -364,6 +387,7 @@
 8. Use ```eventvwr.msc``` to view  Microsoft-Windows-PowerShell%4Operational for event id 40961, 40962, 8193, 8194, and 8197 on source machine for remote connection. 
 9. Use ```eventvwr.msc``` to view  Microsoft-Windows-PowerShell%4Operational for event id 4103, 4104, 53504 on target machine for remote connection. 
 10. Use ```eventvwr.msc``` to view  Microsoft-Windows-WinRM%4Operational logs for event id 91 or 168 on target machine for remote connection. 
+11. Use PSReadline to view full script blocks. 
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
@@ -395,6 +419,8 @@
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 104 within the Microsoft-Windows-Eventlog source. 
 2. Use ```eventvwr.msc``` with Windows Security Event logs 517. 
 3. Use ```eventvwr.msc``` with Windows Security Event logs 1102 to view Audit log clearing. 
+4. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
+```, or ```Remove-EventLog -LogName System```. 
 
 # Explore Group Enumeration [T1069](https://attack.mitre.org/techniques/T1069)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 4799 within Security event logs. 
@@ -414,6 +440,12 @@
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 3. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
 4. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
+5. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4688 with vssadmin. 
+6. View ESENT logs with Event ID 325, 326, or 327 in Windows Application Logs. 
+7. Look for access to ```C:\Windows\System32\config\directory```.
+8. Identify interactions with ```HKLM\SAM\Domains\Accounts\Users```. 
+9. Look for process access to common password locations with Sysmon Event ID 10 or 1.
+10. Look for process creation Event ID 4688 to common password storage locations. 
 
 # Find Common RAT Connections. [T1021](https://attack.mitre.org/techniques/T1021)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -490,6 +522,54 @@
 11. Use ```eventvwr.msc``` with Windows Security Event logs 4776 for NTLM authentication. 
 12. Use ```eventvwr.msc``` with Windows Security Event logs 4768 for TGT successful logon. 
 13. Use ```eventvwr.msc``` with Windows Security Event logs 4769 for TGS access to service. 
-14. Use ```eventvwr.msc``` with Windows Security Event logs 4771 failed ticket logon. 
+14. Use ```eventvwr.msc``` with Windows Security Event logs 4771/4772 failed ticket logon. 
 15. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[(EventID=4624 or EventID=4625)]]```
+16. Look for ```gpscript.exe /logon``` execution for user logons. 
+17. Use ```eventvwr.msc``` with Windows Security Event logs 4770 for kerberos ticket renewal. 
+
+# Examine Startup Actions [T1547](https://attack.mitre.org/techniques/T1547/)
+1. View ```desktop.ini``` for actions taken during startup. 
+
+# View Hosted Web Application Exploitation [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Use ```eventvwr.msc``` with Windows Security Event logs 4688 for process creation events on the host. 
+2. View suspicious php or .jsp files within ```/var/log/httpd/access.log```. 
+
+# Identify Phishing Attempts [T1566](https://attack.mitre.org/techniques/T1566/)
+1. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
+Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order```. 
+
+# Identity Suspicious DLLs [T1574](https://attack.mitre.org/techniques/T1574/)
+1. Examine changes in DLLs residing in ```C:\Windows\System32```. 
+2. Look for non-digitally signed DLLs. 
+3. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
+4. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 10.  
+
+# Identify Credential Dumping [T1003](https://attack.mitre.org/techniques/T1003/)
+1. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4688 with vssadmin. 
+2. View ESENT logs with Event ID 325, 326, or 327 in Windows Application Logs. 
+
+# Identify Brute Force Attempts [T1110](https://attack.mitre.org/techniques/T1110/)
+1. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4776. 
+2. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4740. 
+3. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4624. 
+4. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4625. 
+5. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4768. 
+6. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4771.
+7. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4769. 
+8. Use ```eventvwr.msc``` with Windows Security Event logs Event ID 4776. 
+9. Use ```eventvwr.msc``` with Terminal-Services-RemoteConnectionManager Event ID 1149. 
+10. Use ```eventvwr.msc``` with ListenerRDP-TCP Event ID 261. 
+11. Use ```eventvwr.msc``` with Terminal-Services-LocalSessionManager Event ID 21. 
+
+# Identify Credentials in Group Polocy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
+1. Look for powershell command executiono with ```Get-GPPPassword```. 
+
+# Identify Credentials in Password Stores [T1555]
+1. Look for access to ```C:\Windows\System32\config\directory```.
+2. Identify interactions with ```HKLM\SAM\Domains\Accounts\Users```. 
+3. Look for process access to common password locations with Sysmon Event ID 10 or 1.
+4. Look for process creation Event ID 4688 to common password storage locations. 
+
+# Identify Proxy Usage [T1090](https://attack.mitre.org/techniques/T1090/)
+1. Look for registry interactions with ```HKLM\System\CurrentControlSet\Services\PortProxy\v4tov4\tcp```. 

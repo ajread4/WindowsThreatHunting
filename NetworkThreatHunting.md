@@ -77,5 +77,21 @@
 	- Command to use is ```"C:\Program Files\Wireshark\tshark.exe" -r pcap_file.pcap -Y "icmp" -T fields -e data```
 2. Use [Rita](https://github.com/activecm/rita) to find beaconing activity. 
 
-##Find Beaconing Activity [T1048](https://attack.mitre.org/techniques/T1048/003) [T1573](http://attack.mitre.org/techniques/T1573/)
+# Find Beaconing Activity [T1048](https://attack.mitre.org/techniques/T1048/003) [T1573](http://attack.mitre.org/techniques/T1573/)
 1. Use [Rita](https://github.com/activecm/rita) to find beaconing activity. 
+
+# Find VPN Connections [T1333](https://attack.mitre.org/techniques/T1133/)
+1. Use Event ID 6272 within windows security logs for external IP of user. 
+
+# View RDP Connections [T1210](https://attack.mitre.org/techniques/T1210/) [T1563.002](https://attack.mitre.org/techniques/T1563/002/)
+1. Look for port 3389 connections within network traffic 
+
+# View WMI Traffic [T1047](https://attack.mitre.org/techniques/T1047/)
+1. Identify traffic on port 135 or 137 with ```dce_rpc``` service. 
+
+# View Non Standard Port Traffic [T1509](https://attack.mitre.org/techniques/T1509/).
+1. Use PSReadline to view scriptblock activity. 
+
+# Identify Web Shells [T1505.003](https://attack.mitre.org/techniques/T1505/003/)
+1. Look for out of date browser agents with HTTP traffic on port 80. 
+2. Look for connections to webpages like ```.php, .aspx, .jsp, or .asp```. 
