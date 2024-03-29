@@ -95,3 +95,10 @@
 # Identify Web Shells [T1505.003](https://attack.mitre.org/techniques/T1505/003/)
 1. Look for out of date browser agents with HTTP traffic on port 80. 
 2. Look for connections to webpages like ```.php, .aspx, .jsp, or .asp```. 
+
+# Identify Ping Sweeps 
+1. Use tcpdump with ```-n``` to resolve.
+	- Command to use: ```tcpdump -r pcap 'host 92.242.140.21' -n```
+
+# Identify Sharphound/Bloodhound Activity [T1087](https://attack.mitre.org/techniques/T1087/) [T1482](https://attack.mitre.org/techniques/T1482/)[T1615](https://attack.mitre.org/techniques/T1615/)[T1069](https://attack.mitre.org/techniques/T1069/)[T1018](https://attack.mitre.org/techniques/T1018/) [T1033](https://attack.mitre.org/techniques/T1033/)
+1. Look for increase in traffic with destination port 445 and destination process ```ntoskrnl.exe``` to each workstation within a domain. 

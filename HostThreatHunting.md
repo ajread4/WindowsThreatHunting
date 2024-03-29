@@ -6,7 +6,6 @@
 4. Use ```swf_mastah.py``` to extract Flash from PDF files. 
 5. Use [origami-pdf](https://github.com/cogent/origami-pdf) to analyze PDFs. 
 
-
 # De-obfuscate Code [T1027.010](https://attack.mitre.org/techniques/T1027/010/)
 1. Beautify the script using Notepad++ and JSTool plugins such as JSMin and JSFormat. 
 2. Use [SpiderMonkey](https://spidermonkey.dev/) to analyze JavaScript and VBScript. 
@@ -55,8 +54,8 @@
 4. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[EventID=4725 or EventID=4722 or EventID=4723 or EventID=4724 or EventID=4726 or EventID=4767)]]```
 5. Use ```eventvwr.msc``` with Windows Security Event logs event id 4726 to remove a user account. 
-6. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
-```, or ```Remove-EventLog -LogName System```. 
+6. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application```, or ```Remove-EventLog -LogName System```. 
+7. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
@@ -394,7 +393,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 2. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 800. 
 3. Use ```eventvwr.msc``` on a Windows system and look for event ID 4104 within the Powershell (Microsoft-Windows-Powershell) log. 
 4. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
-5. Focus on ShimCache, AmCache.hve, Prefetch, DAM, and BAM with ```powershell.exe``` on source machine.
+5. Focus on ShimCache, AmCache.hve, Prefetch, DAM, and BAM with ```powershell.exe``` on source machine. 
 
 # Determine the Number Of Log Names [No TTP]
 1. Use ```wevutil.exe``` with Powershell 
@@ -406,6 +405,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 1. Use ```Get-WinEvent``` with XPath queries using PowerShell. 
 	- Command would be ```Get-WinEvent -LogName Security -FilterXPath '*/System/EventID=4720 and */EventData/Data[@Name="TargetUserName"]="[UserName]"'```
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
+3. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 
 # Determine PowerShell Down Grade Attack [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```Get-WinEvent``` using PowerShell. 

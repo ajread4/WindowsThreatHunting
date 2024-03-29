@@ -1,6 +1,6 @@
 # Threat Hunting Guides
 
-Threat hunting guides created by me, AJ Read! 
+Threat hunting guides created by me, AJ Read, from experience hunting or classes! 
 
 # Current Guides
 1. Cloud Threat Hunting 
