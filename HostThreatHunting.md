@@ -1,3 +1,7 @@
+# User Account Lockouts [T1110](https://attack.mitre.org/techniques/T1110/)
+1. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for UserLockOut Activites within the evtx.html, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+2. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4740. 
+3. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4767. 
 
 # Examine PDFs [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use ```pdfid.py``` to summarize risky aspects of the file. 
@@ -41,6 +45,8 @@
 10. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-RDPClient%4Operational for eventid 1149 with source IP and Logon username. 
 14. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational for eventid 21, 22, 25, and 41 for source IP or logon username. 
 15. Focus on ShimCache and AmCache.hve with ```rdpclip.exe``` or ```tstheme.exe``` for RDP destination machine. 
+16. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+17. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
 
 # View Change to Logging [T1070.001](https://attack.mitre.org/techniques/T1070/001/)
 1. Use ```eventvwr.msc``` with Windows System Event logs 4719. 
@@ -56,6 +62,7 @@
 5. Use ```eventvwr.msc``` with Windows Security Event logs event id 4726 to remove a user account. 
 6. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application```, or ```Remove-EventLog -LogName System```. 
 7. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
+8. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
@@ -218,6 +225,7 @@
 20. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 10.
 21. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
 22. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8.   
+23. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
@@ -266,6 +274,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 9. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 10.
 10. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
 11. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
+12. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 
 # Explore File Read Activity [No TTP]
 1. Use ```procmon``` within SysInternals
@@ -324,6 +333,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 4. Look at session restore data in IE at ```%USERPROFILE%\AppData\Local\Microsoft\Internet Explorer\Recovery```. 
 5. View flash cookies at ```%APPDATA%\Roaming\Macromedia\FlashPlayer\#SharedObjects\[random]```. 
 6. Use [Pasco](https://github.com/bauman/python-pasco) to inspect ```index.dat``` file. 
+7. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```./Forensicator -BROWSER BROWSER``` and search for histories within the ```BROWSWER_HISTORY``` folder. 
+8. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```./Forensicator -BROWSER BROWSER``` and search for histories within the BrowserHistory.html file. 
 
 # View Cookies [T1606.001](https://attack.mitre.org/techniques/T1606/001) [T1539](https://attack.mitre.org/techniques/T1539) [T1550.004](https://attack.mitre.org/techniques/T1550/004)
 1. Focus on cookies at ```%\USERPROFILE%\AppData\Roaming\Microsoft\Windows\Cookies``` or ```%\USERPROFILE%\AppData\Local\Microsoft\Windows\INetCookies```. 
@@ -406,6 +417,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command would be ```Get-WinEvent -LogName Security -FilterXPath '*/System/EventID=4720 and */EventData/Data[@Name="TargetUserName"]="[UserName]"'```
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 3. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
+4. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 
 # Determine PowerShell Down Grade Attack [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```Get-WinEvent``` using PowerShell. 
@@ -527,6 +539,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[(EventID=4624 or EventID=4625)]]```
 16. Look for ```gpscript.exe /logon``` execution for user logons. 
 17. Use ```eventvwr.msc``` with Windows Security Event logs 4770 for kerberos ticket renewal. 
+18. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+19. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
 
 # Examine Startup Actions [T1547](https://attack.mitre.org/techniques/T1547/)
 1. View ```desktop.ini``` for actions taken during startup. 
@@ -561,6 +575,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 9. Use ```eventvwr.msc``` with Terminal-Services-RemoteConnectionManager Event ID 1149. 
 10. Use ```eventvwr.msc``` with ListenerRDP-TCP Event ID 261. 
 11. Use ```eventvwr.msc``` with Terminal-Services-LocalSessionManager Event ID 21. 
+12. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+13. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
 
 # Identify Credentials in Group Polocy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
 1. Look for powershell command executiono with ```Get-GPPPassword```. 
