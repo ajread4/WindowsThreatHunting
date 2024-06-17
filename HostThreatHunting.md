@@ -1,3 +1,13 @@
+# Malware Language [No TTPs]
+1. Use [Detect It Easy](https://github.com/horsicq/Detect-It-Easy) to find the language which the malware is written. 
+
+# Malware Packing [T1027.002](https://attack.mitre.org/techniques/T1027/002/)
+1. Use [Detect It Easy](https://github.com/horsicq/Detect-It-Easy) to find the entropy of each section of the malware. 
+
+# Malware Signing [T1553.002](https://attack.mitre.org/techniques/T1553/002/)
+1. Use [SigCheck](https://learn.microsoft.com/en-us/sysinternals/downloads/sigcheck) to determine if the malware is signed. 
+2. Use [Detect It Easy](https://github.com/horsicq/Detect-It-Easy) to help determine if malware is signed. 
+
 # User Account Lockouts [T1110](https://attack.mitre.org/techniques/T1110/)
 1. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for UserLockOut Activites within the evtx.html, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 2. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4740. 
@@ -16,11 +26,13 @@
 3. Use [CScript](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cscript) to analyze JavaScript and VBScript. 
 4. Use [box-js](https://github.com/CapacitorSet/box-js) within the command line to analyze JavaScript. 
 5. Use ```base64dump.py``` to decode Base64 strings. 
+
+
 # View Embedded Strings [T1024](https://attack.mitre.org/techniques/T1204/)
 1. Run ```pestr``` on a linux operating system to view strings on an executable. 
 2. Run ```strings -a``` on a linux OS to view strings on an executable. 
 3. Run ```strings --encoding=l``` on a lnux OS to view strings of an executable. 
-4. Place the file in [PeStudio](https://www.winitor.com/download). 
+4. Place the file in [PeStudio](https://www.winitor.com/download).
 
 # Identify WMI Activity [T1047](https://attack.mitre.org/techniques/T1047/)
 1. Focus on ShimCache, AmCache.hve, and Prefetch with ```wmic.exe``` on source machine. 
@@ -52,6 +64,8 @@
 1. Use ```eventvwr.msc``` with Windows System Event logs 4719. 
 2. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
 ```, or ```Remove-EventLog -LogName System```. 
+3. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+
 
 # View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/) [T1070](https://attack.mitre.org/techniques/T1070/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
@@ -63,6 +77,8 @@
 6. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application```, or ```Remove-EventLog -LogName System```. 
 7. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 8. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+9. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
@@ -398,6 +414,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 9. Use ```eventvwr.msc``` to view  Microsoft-Windows-PowerShell%4Operational for event id 4103, 4104, 53504 on target machine for remote connection. 
 10. Use ```eventvwr.msc``` to view  Microsoft-Windows-WinRM%4Operational logs for event id 91 or 168 on target machine for remote connection. 
 11. Use PSReadline to view full script blocks. 
+12. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
@@ -405,6 +422,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 3. Use ```eventvwr.msc``` on a Windows system and look for event ID 4104 within the Powershell (Microsoft-Windows-Powershell) log. 
 4. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 5. Focus on ShimCache, AmCache.hve, Prefetch, DAM, and BAM with ```powershell.exe``` on source machine. 
+6. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+
 
 # Determine the Number Of Log Names [No TTP]
 1. Use ```wevutil.exe``` with Powershell 
@@ -433,6 +452,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 3. Use ```eventvwr.msc``` with Windows Security Event logs 1102 to view Audit log clearing. 
 4. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
 ```, or ```Remove-EventLog -LogName System```. 
+5. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+
 
 # Explore Group Enumeration [T1069](https://attack.mitre.org/techniques/T1069)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 4799 within Security event logs. 
@@ -577,6 +598,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 11. Use ```eventvwr.msc``` with Terminal-Services-LocalSessionManager Event ID 21. 
 12. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 13. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
+14. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 
 # Identify Credentials in Group Polocy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
 1. Look for powershell command executiono with ```Get-GPPPassword```. 
