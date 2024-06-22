@@ -1,3 +1,13 @@
+# Beaconing Activity [T1071](https://attack.mitre.org/techniques/T1071)[T1059](https://attack.mitre.org/techniques/T1059)[T1001.003](https://attack.mitre.org/techniques/T1001/003/)[T1573](https://attack.mitre.org/techniques/T1573)[T1029](https://attack.mitre.org/techniques/T1029)[T1021](https://attack.mitre.org/techniques/T1021)[T1090](https://attack.mitre.org/techniques/T1090)[T1095](https://attack.mitre.org/techniques/T1095)
+1. Identify Sysmon logs with Event ID 3. 
+
+# Identify TimeStomping [T1070.006](https://attack.mitre.org/techniques/T1070/006/)
+1. Identify Sysmon logs with Event ID 2. 
+
+# Identify Kerberaost Attack [T1558.003](https://attack.mitre.org/techniques/T1558/003/)
+1. View Windows Security Event logs with Event ID 4769 as well as encryption type 0x17 with uncommon usernames.  
+2. Look for files with names like "Rubeus" or "PowerView" within PowerShell logs event ID 4104. 
+
 # Malware Language [No TTPs]
 1. Use [Detect It Easy](https://github.com/horsicq/Detect-It-Easy) to find the language which the malware is written. 
 
@@ -146,6 +156,8 @@
 23. Analyze the file with [Viper](https://github.com/viper-framework/viper). 
 24. Analyze the file with [PortEx](https://github.com/struppigel/PortEx).
 25. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
+26. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
+27. Examine Sysmon Logs with Event ID 1. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -242,6 +254,7 @@
 21. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
 22. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8.   
 23. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
+24. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
@@ -309,6 +322,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command to use ```PECmd.exe -f [prefetch_file]```
 11. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
 12. View files access from IE at ```%USERPROFILE%\AppData\Local\Microsoft\Windows\WebCache\WebCacheV*.dat```. 
+13. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
@@ -319,6 +333,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 6. View chrome user account at ```%USERPROFILE%\AppData\Local\Google\Chrome\UserData\Default\History```. 
 7. View firefox download history at ```%USERPROFILE%\AppData\Roaming\Mozilla\Firefox\Profiles\[randomtext].default\downloads.sqlite```.
 8. View user downloads within ```C:\User\*\Downloads```. 
+9. View Sysmon Event ID 22 for domain queries. 
 
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -381,6 +396,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 1. Use ```PECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```PECmd.exe -f [prefetch_file]```
 2. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
+3. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
+
 # Parse Windows 10 Timeline [No TTP]
 1. Use ```WxTCmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) on Windows Command line. 
 	- Command to use ```WxTCmd.exe -f [timeline_file]```
@@ -397,7 +414,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 2. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 11. 
 3. Use ```LECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```LECmd.exe -f [shortcut_file]```
-	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```
+	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```. 
+4. Look at Sysmon Event logs for event ID 11. 
 
 # Explore Powershell Activity [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational. 
@@ -415,6 +433,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 10. Use ```eventvwr.msc``` to view  Microsoft-Windows-WinRM%4Operational logs for event id 91 or 168 on target machine for remote connection. 
 11. Use PSReadline to view full script blocks. 
 12. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+13. View PowerShell Script blocks within PowerShell-Operational.evtx logs with event ID 4104. 
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
@@ -423,7 +442,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 4. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 5. Focus on ShimCache, AmCache.hve, Prefetch, DAM, and BAM with ```powershell.exe``` on source machine. 
 6. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
-
+7. View PowerShell Script blocks within PowerShell-Operational.evtx logs with event ID 4104. 
+8. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 
 # Determine the Number Of Log Names [No TTP]
 1. Use ```wevutil.exe``` with Powershell 
@@ -444,7 +464,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
             $_.Message -replace '(?s).*EngineVersion=([\d\.]+)*.*','$1')
         if($version -lt ([Version] "5.0")) { $_ }}```
 2. User ```eventvwr.msc``` on a Windows system and filter for event ID 400 within the PowerShell logs. 
-	- ```EngineVersion``` will have a different number than other PowerShell logs 
+	- ```EngineVersion``` will have a different number than other PowerShell logs. 
 
 # Determine Log Clearing [T1070.001](https://attack.mitre.org/techniques/T1070/004) [T1485](https://attack.mitre.org/techniques/T1485)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 104 within the Microsoft-Windows-Eventlog source. 
@@ -453,7 +473,6 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 4. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
 ```, or ```Remove-EventLog -LogName System```. 
 5. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
-
 
 # Explore Group Enumeration [T1069](https://attack.mitre.org/techniques/T1069)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 4799 within Security event logs. 
@@ -568,7 +587,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 
 # View Hosted Web Application Exploitation [T1190](https://attack.mitre.org/techniques/T1190/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs 4688 for process creation events on the host. 
-2. View suspicious php or .jsp files within ```/var/log/httpd/access.log```. 
+2. View suspicious php or .jsp files within ```/var/log/httpd/access.log```.
 
 # Identify Phishing Attempts [T1566](https://attack.mitre.org/techniques/T1566/)
 1. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
@@ -600,7 +619,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 13. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
 14. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 
-# Identify Credentials in Group Polocy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
+# Identify Credentials in Group Policy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
 1. Look for powershell command executiono with ```Get-GPPPassword```. 
 
 # Identify Credentials in Password Stores [T1555]
