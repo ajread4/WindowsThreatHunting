@@ -1,3 +1,6 @@
+# AS-REP Roasting Detection [T1558.004](https://attack.mitre.org/techniques/T1558/004/)
+1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4768 with ticket encryption type of 0x17 and ticket options of 0x40800010. 
+
 # Beaconing Activity [T1071](https://attack.mitre.org/techniques/T1071)[T1059](https://attack.mitre.org/techniques/T1059)[T1001.003](https://attack.mitre.org/techniques/T1001/003/)[T1573](https://attack.mitre.org/techniques/T1573)[T1029](https://attack.mitre.org/techniques/T1029)[T1021](https://attack.mitre.org/techniques/T1021)[T1090](https://attack.mitre.org/techniques/T1090)[T1095](https://attack.mitre.org/techniques/T1095)
 1. Identify Sysmon logs with Event ID 3. 
 
@@ -7,6 +10,7 @@
 # Identify Kerberaost Attack [T1558.003](https://attack.mitre.org/techniques/T1558/003/)
 1. View Windows Security Event logs with Event ID 4769 as well as encryption type 0x17 with uncommon usernames.  
 2. Look for files with names like "Rubeus" or "PowerView" within PowerShell logs event ID 4104. 
+3. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4768 with ticket encryption type of 0x17 and ticket options of 0x40800010. 
 
 # Malware Language [No TTPs]
 1. Use [Detect It Easy](https://github.com/horsicq/Detect-It-Easy) to find the language which the malware is written. 
