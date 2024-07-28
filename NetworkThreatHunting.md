@@ -1,3 +1,8 @@
+# Identify Credential Stuffing [T1110.004](https://attack.mitre.org/techniques/T1110/004/)
+1. Use ```wireshark``` with http traffic to identify username and password combinations to the same destination IP address, repeatedly using POST REQUESTS, and in quick succession. The HTTP status of 404 is a common response from the target. 
+2. Use ```tshark``` to filter and identify repeated POST requests with username and password combinations. 
+	- Command line: ```$ tshark -Y "http.request.method==POST and ip.src ==156.146.62.213 and http.request.uri contains loginservice" -r meerkat.pcap -T fields -e text | cut -d " " -f 7,11 | sort | uniq```
+
 # View Network Connections to Workstation [No TTP]
 1. Use ```tcpview``` within Sysinternals 
 	- ```tcpview -accepteula```
@@ -96,7 +101,7 @@
 1. Look for out of date browser agents with HTTP traffic on port 80. 
 2. Look for connections to webpages like ```.php, .aspx, .jsp, or .asp```. 
 
-# Identify Ping Sweeps 
+# Identify Ping Sweeps
 1. Use tcpdump with ```-n``` to resolve.
 	- Command to use: ```tcpdump -r pcap 'host 92.242.140.21' -n```
 
