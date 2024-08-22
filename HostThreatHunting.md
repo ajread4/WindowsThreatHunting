@@ -4,7 +4,7 @@
 # AS-REP Roasting Detection [T1558.004](https://attack.mitre.org/techniques/T1558/004/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4768 with ticket encryption type of 0x17 and ticket options of 0x40800010. 
 
-# Beaconing Activity [T1071](https://attack.mitre.org/techniques/T1071)[T1059](https://attack.mitre.org/techniques/T1059)[T1001.003](https://attack.mitre.org/techniques/T1001/003/)[T1573](https://attack.mitre.org/techniques/T1573)[T1029](https://attack.mitre.org/techniques/T1029)[T1021](https://attack.mitre.org/techniques/T1021)[T1090](https://attack.mitre.org/techniques/T1090)[T1095](https://attack.mitre.org/techniques/T1095)
+# Beaconing Activity [T1071](https://attack.mitre.org/techniques/T1071) [T1059](https://attack.mitre.org/techniques/T1059) [T1001.003](https://attack.mitre.org/techniques/T1001/003/)[T1573](https://attack.mitre.org/techniques/T1573) [T1029](https://attack.mitre.org/techniques/T1029) [T1021](https://attack.mitre.org/techniques/T1021) [T1090](https://attack.mitre.org/techniques/T1090) [T1095](https://attack.mitre.org/techniques/T1095)
 1. Identify Sysmon logs with Event ID 3. 
 
 # Identify TimeStomping [T1070.006](https://attack.mitre.org/techniques/T1070/006/)
@@ -44,7 +44,6 @@
 4. Use [box-js](https://github.com/CapacitorSet/box-js) within the command line to analyze JavaScript. 
 5. Use ```base64dump.py``` to decode Base64 strings. 
 
-
 # View Embedded Strings [T1024](https://attack.mitre.org/techniques/T1204/)
 1. Run ```pestr``` on a linux operating system to view strings on an executable. 
 2. Run ```strings -a``` on a linux OS to view strings on an executable. 
@@ -61,7 +60,7 @@
 7. Look for MOF files within ```C:\Windows\System32\wbem\AutoRecover``` or ```C:\Windows\System32\wbem\mofcomp.exe```. 
 8. Look for MOF files in registry ```HKLM\SOFTWARE\Microsoft\Wbem\CIMON```. 
 
-# Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/) [T1210](https://attack.mitre.org/techniques/T1210/)
+# Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/)[T1210](https://attack.mitre.org/techniques/T1210/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648. 
 2. Use ```eventvwr.msc``` with Microsoft-Windows-TerminalServices-RDPClient%4Operational for eventid 1024 and 1102 with destination hostname or IP address. 
 3. View registry ```NTUSER\Software\Microsoft\Terminal Server Client\Servers ``` to find RDP connections per user. 
@@ -82,7 +81,6 @@
 2. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
 ```, or ```Remove-EventLog -LogName System```. 
 3. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
-
 
 # View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/) [T1070](https://attack.mitre.org/techniques/T1070/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
