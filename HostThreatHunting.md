@@ -1,3 +1,6 @@
+# Discover System Time Change [T1124](https://attack.mitre.org/techniques/T1124/)
+1. On a linux system, view the syslog within /var/log/syslog and look for ```systemd-timedated``` for changes in time. 
+
 # AS-REP Roasting Detection [T1558.004](https://attack.mitre.org/techniques/T1558/004/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4768 with ticket encryption type of 0x17 and ticket options of 0x40800010. 
 
