@@ -1,3 +1,6 @@
+# Identify Web Scanning [T1595.003](https://attack.mitre.org/techniques/T1595/003/)
+1. Look through logs within ```/var/log``` to find GET requests within log data. 
+
 # Discover System Time Change [T1124](https://attack.mitre.org/techniques/T1124/)
 1. On a linux system, view the syslog within /var/log/syslog and look for ```systemd-timedated``` for changes in time. 
 

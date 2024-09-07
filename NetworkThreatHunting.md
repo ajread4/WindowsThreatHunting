@@ -1,3 +1,6 @@
+# Identify LLMNR Poisoning [T1557.001](https://attack.mitre.org/techniques/T1557/001/)
+1. Filter for "LLMNR" traffic within wireshark pcap and identify numerous resquests and response failures from a machine. There will be NTLMSSP_NEGOTIATE, NTLMSSP_CHALLENGE, and NTLMSSP_AUTH messages. 
+
 # Identify Credential Stuffing [T1110.004](https://attack.mitre.org/techniques/T1110/004/)
 1. Use ```wireshark``` with http traffic to identify username and password combinations to the same destination IP address, repeatedly using POST REQUESTS, and in quick succession. The HTTP status of 404 is a common response from the target. 
 2. Use ```tshark``` to filter and identify repeated POST requests with username and password combinations. 

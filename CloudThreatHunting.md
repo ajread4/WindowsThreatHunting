@@ -1,6 +1,9 @@
-# AWS 
+# AWS
 
 ## Host
+
+## Identify New Databse Snapshots [T1578.001](https://attack.mitre.org/techniques/T1578/001/)
+1. Look through CloudTrail logs to find CreateDBSnapshot API calls with the db specified within dBSnapshotIdentifier. 
 
 ### Detect Potential Financial Theft [T1657](https://attack.mitre.org/techniques/T1657/)
 1. Query Amazon Macie for alerts the GUI. 
@@ -210,7 +213,8 @@
 
 ### Detect Access EC2 Metadata Service Vulnerability [T1552.005](https://attack.mitre.org/techniques/T1552/005/)
 1. Use AWS Inspector results to view IMDSv2, not Version 1 interactions. 
-# Azure 
+
+# Azure
 
 ## Host
 
@@ -281,6 +285,7 @@
 ### Identify Cloud Instance Updates [T1578](https://attack.mitre.org/techniques/T1578)
 1. Review alerts within Azure Activity Log GUI for instance updates.
 2. Query the Azure Log Analytics GUI for VM updates. 
+
 ### Identify Reverse Shell Activity [T1059](https://attack.mitre.org/techniques/T1059/)
 1. Query the Log Analytics Workspace for SecurityAlert. 
 	- Query to run: ```SecurityAlert | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | where DisplayName == "Possible reverse shell" | take 1 | extend FilePath = extract_json("$.File Path", ExtendedProperties) | extend FileName = extract_json("$.File Name", ExtendedProperties) | extend FileHash = extract_json("$.File Sha256", ExtendedProperties) | extend UserName = extract_json("$.User Name", ExtendedProperties) | extend MachineName = extract_json("$.Machine Name", ExtendedProperties) | project TimeGenerated, FilePath, FileName, FileHash, UserName, MachineName```
@@ -329,7 +334,7 @@
 	- Queries to run: 
 		- ```AADManagedIdentitySignInLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00"))```
 		- ```AzureActivity | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) and Caller == [UserID]```
-## Network 
+## Network
 
 ### Detect SSH Brute Force [T1110](https://attack.mitre.org/techniques/T1110/)
 1. Review alerts for "Failed SSH brute force attack" within Microsoft Defender for Cloud alerts. 
