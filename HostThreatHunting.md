@@ -1,3 +1,10 @@
+# Identify Audit Policy Changes [T1562.002](https://attack.mitre.org/techniques/T1562/002/)
+1. Search Windows Security logs for Event ID 4719 and the specific subcategory. 
+
+# Identify Firewall Tampering [1562.004](https://attack.mitre.org/techniques/T1562/004/)
+1. Look for wierd rule names that were added within the Windows FW event logs. 
+2. Focus on the "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall" Channel with Event ID 2004. 
+
 # Identify Web Scanning [T1595.003](https://attack.mitre.org/techniques/T1595/003/)
 1. Look through logs within ```/var/log``` to find GET requests within log data. 
 
@@ -84,6 +91,7 @@
 2. Look for commands like ```Remove-EventLog -LogName Security```, ```Remove-EventLog -LogName Application
 ```, or ```Remove-EventLog -LogName System```. 
 3. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+4. Search Windows Security logs for Event ID 4719 and the specific subcategory. 
 
 # View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/) [T1070](https://attack.mitre.org/techniques/T1070/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
@@ -96,7 +104,6 @@
 7. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 8. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 9. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
-
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
@@ -166,6 +173,7 @@
 25. Examine the execution within [ProcDot](https://www.procdot.com/downloadprocdotbinaries.htm). 
 26. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 27. Examine Sysmon Logs with Event ID 1. 
+28. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -263,6 +271,7 @@
 22. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8.   
 23. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 24. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
+25. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
