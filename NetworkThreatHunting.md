@@ -1,3 +1,14 @@
+# Detect Zone Transfer [T1590.002](https://attack.mitre.org/techniques/T1590/002/)
+1. Use WireShark to find DNS zone transfers with ```dns.qry.type == 252```. 
+
+# Detect Port Scanning [T1595.001](https://attack.mitre.org/techniques/T1595/001/)
+1. Filter traffic in WireShark for source and destination IP with SYN ACK (```tcp.flags == 0x0012```) to show ports that responded to SYN from the adversary. 
+2. Filter traffic in WireShark for source and destination IP with reset flag set by the target using ```tcp.flags.reset == 1```. 
+
+# Identify Web Scanning [T1595.003](https://attack.mitre.org/techniques/T1595/003/)
+1. Filter traffic in WireShark to display the various URIs and GET requests from HTTP traffic. A large number means adversary is web scanning. 
+2. Look for all subdomains during web scanning in WireShark with ````_ws.col.info == "HTTP/1.1 200 OK  (text/html)"````.
+
 # Identify LLMNR Poisoning [T1557.001](https://attack.mitre.org/techniques/T1557/001/)
 1. Filter for "LLMNR" traffic within wireshark pcap and identify numerous resquests and response failures from a machine. There will be NTLMSSP_NEGOTIATE, NTLMSSP_CHALLENGE, and NTLMSSP_AUTH messages. 
 
@@ -40,6 +51,7 @@
 	- ```zeek-cut``` can be beneficial on the command line to pick specific fields
 2. Use Wireshark and filter on DNS traffic. 
 3. Use [Rita](https://github.com/activecm/rita) to find beaconing activity. 
+4. Use WireShark to find DNS zone transfers with ```dns.qry.type == 252```. 
 
 # View SNMP Activity [No TTP]
 1. Use ```zeek``` with snmp.log from pcap
