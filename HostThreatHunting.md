@@ -97,6 +97,7 @@
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
 2. Use ```eventvwr.msc``` with Windows Security Event logs event id 4735 to view local group changes. 
 3. Use ```eventvwr.msc``` with Windows Security Event logs event id 4738 to view local password change. 
+4. Use ```eventvwr.msc``` with Windows Security Event logs event id 4688 to view process creation logs with the use of ```net.exe``` or ```net1.exe``` to change passwords. 
 4. Use ```wevutil.exe``` and search for appropriate Windows Security Eveents logs. 
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[EventID=4725 or EventID=4722 or EventID=4723 or EventID=4724 or EventID=4726 or EventID=4767)]]```
 5. Use ```eventvwr.msc``` with Windows Security Event logs event id 4726 to remove a user account. 
@@ -228,6 +229,7 @@
 3. Use ```Get-WinEvent``` with Sysmon Event Logs. 
 	- Command to use is ```Get-WinEvent -Path <Path to Log> -FilterXPath '*/System/EventID=8'```
 4. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
+5. With Sysmon logs, look for event ID 15. 
 
 # Autoruns [T1547](https://attack.mitre.org/techniques/T1547)
 1. Use ```autoruns``` within Sysinternals 
@@ -287,6 +289,7 @@
 7. Use ```Get-ItemProperty``` with the specific registry key in Powershell.
 8. Use [Regshot](https://github.com/Seabreg/Regshot) to compare initial registry with final registry post execution. 
 9. Use [RegRipper](https://github.com/keydet89/RegRipper3.0). 
+	- Command to use is ```regripper -f [Hive] -a```.
 10. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
 Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order```. 
 
@@ -351,6 +354,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 7. View firefox download history at ```%USERPROFILE%\AppData\Roaming\Mozilla\Firefox\Profiles\[randomtext].default\downloads.sqlite```.
 8. View user downloads within ```C:\User\*\Downloads```. 
 9. View Sysmon Event ID 22 for domain queries. 
+10. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to find file downloads via user hive. 
+	- Command to run is ```regripper -f [Hive] -a ```
 
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -451,6 +456,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 11. Use PSReadline to view full script blocks. 
 12. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 13. View PowerShell Script blocks within PowerShell-Operational.evtx logs with event ID 4104. 
+14. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to highlight powershell downloads with IEX Download String. 
+	- Command to use ```regripper -f [Hive] -a```.
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
@@ -461,6 +468,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 6. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 7. View PowerShell Script blocks within PowerShell-Operational.evtx logs with event ID 4104. 
 8. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
+9. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to highlight powershell downloads with IEX Download String that can be found in LastRunMRU. 
+	- Command to use ```regripper -f [Hive] -a```.
 
 # Determine the Number Of Log Names [No TTP]
 1. Use ```wevutil.exe``` with Powershell 
