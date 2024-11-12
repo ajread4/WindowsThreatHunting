@@ -356,6 +356,9 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 9. View Sysmon Event ID 22 for domain queries. 
 10. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to find file downloads via user hive. 
 	- Command to run is ```regripper -f [Hive] -a ```
+11. View edge user downloads looking at the History sqlite3 database table, specifically the downloads table. 
+12. View edge user downloads looking at the History sqlite3 database table, specifically the urls table. 
+13. View edge user downloads looking at the History sqlite3 database table, specifically the downloads_url_chains table. 
 
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -388,6 +391,10 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 6. Use [Pasco](https://github.com/bauman/python-pasco) to inspect ```index.dat``` file. 
 7. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```./Forensicator -BROWSER BROWSER``` and search for histories within the ```BROWSWER_HISTORY``` folder. 
 8. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```./Forensicator -BROWSER BROWSER``` and search for histories within the BrowserHistory.html file. 
+9. If given a History SQLite3 table, use sql statements to examine the various tables and open the db with ```sqlite3```. 
+10. View edge user downloads looking at the History sqlite3 database table, specifically the downloads table. 
+12. View edge user downloads looking at the History sqlite3 database table, specifically the urls table. 
+13. View edge user downloads looking at the History sqlite3 database table, specifically the downloads_url_chains table. 
 
 # View Cookies [T1606.001](https://attack.mitre.org/techniques/T1606/001) [T1539](https://attack.mitre.org/techniques/T1539) [T1550.004](https://attack.mitre.org/techniques/T1550/004)
 1. Focus on cookies at ```%\USERPROFILE%\AppData\Roaming\Microsoft\Windows\Cookies``` or ```%\USERPROFILE%\AppData\Local\Microsoft\Windows\INetCookies```. 
@@ -533,6 +540,9 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 # View Installed Programs [T1543](https://attack.mitre.org/techniques/T1543) [T1036.005](https://attack.mitre.org/techniques/T1036/005)[T1569](https://attack.mitre.org/techniques/T1569)
 1. Use ```osquery``` on the Windows Command line. 
 	- Command to use ```select * from programs;```
+2. Look at the Application Event log to find events for msiinstaller. 
+3. Use [MFTECmd](https://github.com/EricZimmerman/MFTECmd) to look at downloaded files from the ```$MFT``` on a system. 
+4. Look at Application Event log for event ID 1033. 
 
 # View All Users [T1078.002](https://attack.mitre.org/techniques/T1078/002)[T1136.002]((https://attack.mitre.org/techniques/T1136/002))[T1098](https://attack.mitre.org/techniques/T1098) [T1070.009](https://attack.mitre.org/techniques/T1070/009) [T1531](https://attack.mitre.org/techniques/T1531)
 1. Use ```osquery``` on the Windows Command line. 
@@ -550,11 +560,14 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 1. Use ```osquery``` on the Windows Command line. 
 	- Command to use in interactive mode is ```select sid,path from userassist;```. 
 2. View the registry at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count``` where the GUID is specific for the OS. 
+3. Examine Word Wheel Query with ```regripper```. 
 
 # Parse $MFT for Windows NTFS [T1564](https://attack.mitre.org/techniques/T1564)
 1. Use ```MFTECmd.exe``` on the Windows command line. 
 	- Command to use ```MCTECmd.exe -f [file] --csv [path_to_csv_output]```
 2. Use ```Autopsy``` as a secondary tool. 
+3. Pull out specific files and examine using ```--de``` option for ```MFTECmd.exe```. 
+4. Use ```bless``` to examine the $MFT. 
 
 # Parse $Boot for Windows NTFS [T1564](https://attack.mitre.org/techniques/T1564)
 1. Use ```MFTECmd.exe``` on the Windows command line. 
