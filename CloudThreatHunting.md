@@ -2,6 +2,10 @@
 
 ## Host
 
+## Identify User Policy Creation [T1098.003](https://attack.mitre.org/techniques/T1098/003/)
+1. Query CloudTrail Logs using jq. 
+	- Commands to run: ```jq '.Records[] | select(.eventSource=="iam.amazonaws.com" and .eventName== "AttachUserPolicy")' ```
+
 ## Identify New Databse Snapshots [T1578.001](https://attack.mitre.org/techniques/T1578/001/)
 1. Look through CloudTrail logs to find CreateDBSnapshot API calls with the db specified within dBSnapshotIdentifier. 
 
