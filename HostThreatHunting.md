@@ -1,7 +1,7 @@
-# View Docker Image Updates in Registry
+# View Docker Image Updates in Registry [T1612](https://attack.mitre.org/techniques/T1612/)
 1. Search HTTP logs for the "PATCH" method. 
 
-# Identify Docker Logs
+# Identify Docker Logs [No Specific TTP]
 1. Run ```docker logs [container name]``` in the command line. 
 2. Execute ```docker exec [container name] ls -la /var/log``` in the command line. 
 
