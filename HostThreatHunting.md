@@ -1,3 +1,10 @@
+# View Docker Image Updates in Registry
+1. Search HTTP logs for the "PATCH" method. 
+
+# Identify Docker Logs
+1. Run ```docker logs [container name]``` in the command line. 
+2. Execute ```docker exec [container name] ls -la /var/log``` in the command line. 
+
 # Identify Audit Policy Changes [T1562.002](https://attack.mitre.org/techniques/T1562/002/)
 1. Search Windows Security logs for Event ID 4719 and the specific subcategory. 
 
@@ -627,6 +634,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 # View Hosted Web Application Exploitation [T1190](https://attack.mitre.org/techniques/T1190/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs 4688 for process creation events on the host. 
 2. View suspicious php or .jsp files within ```/var/log/httpd/access.log```.
+3. View suspicious php files within ```/var/log/apache2/access.log```. 
 
 # Identify Phishing Attempts [T1566](https://attack.mitre.org/techniques/T1566/)
 1. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
