@@ -2,11 +2,11 @@
 
 ## Host
 
-## Identify User Policy Creation [T1098.003](https://attack.mitre.org/techniques/T1098/003/)
+### Identify User Policy Creation [T1098.003](https://attack.mitre.org/techniques/T1098/003/)
 1. Query CloudTrail Logs using jq. 
 	- Commands to run: ```jq '.Records[] | select(.eventSource=="iam.amazonaws.com" and .eventName== "AttachUserPolicy")' ```
 
-## Identify New Databse Snapshots [T1578.001](https://attack.mitre.org/techniques/T1578/001/)
+### Identify New Databse Snapshots [T1578.001](https://attack.mitre.org/techniques/T1578/001/)
 1. Look through CloudTrail logs to find CreateDBSnapshot API calls with the db specified within dBSnapshotIdentifier. 
 
 ### Detect Potential Financial Theft [T1657](https://attack.mitre.org/techniques/T1657/)
@@ -111,6 +111,7 @@
 ### View Deployed Containers [T1610](https://attack.mitre.org/techniques/T1610/)
 1. Query with [kai](https://github.com/anchore/k8s-inventory) to inventory containers within the environment. 
 2. Query AWS Config GUI within the Resources section. 
+
 ## Network
 
 ### Detect Web Fuzzing [T1190](https://attack.mitre.org/techniques/T1190/)
@@ -125,6 +126,7 @@
 		- ```aws logs get-query-results --query-id $QUERY_ID | jq -r '.results[][] | select(.value | contains("aws-secrets"))'```
 2. Query CloudWatch Log Insights via the GUI and a specific log group. 
 	- Query to run: ```fields integrationErrorMessage | filter integrationErrorMessage ~= "No such file or directory"```
+
 ### View User Agents
 1. Use ```s3logparse.py``` found [here](https://www.google.com/search?q=s3logparse+py&oq=s3logparse+py&aqs=chrome..69i57j33i299.2618j0j7&sourceid=chrome&ie=UTF-8). 
 	- Command to use is ```s3logparse.py useragent [useragent]```.

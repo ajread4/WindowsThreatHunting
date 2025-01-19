@@ -1,3 +1,6 @@
+# Detect Self Signed Certificates [T1587.003](https://attack.mitre.org/techniques/T1587/003/)
+1. Identify Server or Client traffic in Wireshark with "Certificate, Server Key Exchange, Server Hello Done" and identify the issuer and subject. If same, then self signed. 
+
 # Detect Zone Transfer [T1590.002](https://attack.mitre.org/techniques/T1590/002/)
 1. Use WireShark to find DNS zone transfers with ```dns.qry.type == 252```. 
 
