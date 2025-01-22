@@ -673,7 +673,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 # Identify Credentials in Group Policy [T1552.006](https://attack.mitre.org/techniques/T1552/006/)
 1. Look for powershell command executiono with ```Get-GPPPassword```. 
 
-# Identify Credentials in Password Stores [T1555]
+# Identify Credentials in Password Stores [T1555](https://attack.mitre.org/techniques/T1555/)
 1. Look for access to ```C:\Windows\System32\config\directory```.
 2. Identify interactions with ```HKLM\SAM\Domains\Accounts\Users```. 
 3. Look for process access to common password locations with Sysmon Event ID 10 or 1.
