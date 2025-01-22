@@ -139,7 +139,8 @@
 5. Find the drive letter for the USB device ```SOFTWARE\Microsoft\Windows Portable Devices\Devices``` or ```SYSTEM\MountedDevices```. 
 6. Device mounting creates a link file at ```C:\%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Recent``` or ```C:\%USERPROFILE%\AppData\Roaming\Microsoft\Office\Recent```. 
 7. Use ```eventvwr.msc``` with Windows Security Event logs 20001. 
-8. View USB connection time at ```HKLM\Software\Microsoft\Windows NT\CurrentVersion\EMDMgmt```. 
+8. View USB connection time at ```HKLM\Software\Microsoft\Windows NT\CurrentVersion\EMDMgmt```.
+9. Determine UNIX timestamps for initial insertion, last insertion, etc for USB devices within the arguments secction of ```SYSTEM\CurrentControlSet\Enum\USBSTOR```. 
 
 # Identify TimeZone [No TTP]
 1. Look at ```SYSTEM\CurrentControlSet\Control\TimeZoneInformation``` within the System Hive. 
@@ -182,6 +183,7 @@
 26. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 27. Examine Sysmon Logs with Event ID 1. 
 28. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
+29. Use ```regripper``` to examine the NTUSER.dat file for a specific user looking at UserAssist. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -299,6 +301,7 @@
 	- Command to use is ```regripper -f [Hive] -a```.
 10. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
 Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order```. 
+11. Use ```regripper``` to examine the NTUSER.dat file for a specific user looking at UserAssist. 
 
 # Explore Scheduled Tasks [T1036.004](https://attack.mitre.org/techniques/T136/004) [T1053.005](https://attack.mitre.org/techniques/T1053/005)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -568,6 +571,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command to use in interactive mode is ```select sid,path from userassist;```. 
 2. View the registry at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count``` where the GUID is specific for the OS. 
 3. Examine Word Wheel Query with ```regripper```. 
+4. Use ```regripper``` to examine the NTUSER.dat file for a specific user. 
 
 # Parse $MFT for Windows NTFS [T1564](https://attack.mitre.org/techniques/T1564)
 1. Use ```MFTECmd.exe``` on the Windows command line. 
