@@ -418,7 +418,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command to use ```LECmd.exe -f [shortcut_file]```
 	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```
 
-# Explore Shortcut Files [T1080](https://attack.mitre.org/techniques/T1080) [T1547.009](https://attack.mitre.org/techniques/T1547/009) [T1222](https://attack.mitre.org/techniques/T1222) [T1204.002])(https://attack.mitre.org/techniques/T1204/002)
+# Explore Shortcut Files [T1080](https://attack.mitre.org/techniques/T1080) [T1547.009](https://attack.mitre.org/techniques/T1547/009) [T1222](https://attack.mitre.org/techniques/T1222) [T1204.002](https://attack.mitre.org/techniques/T1204/002)
 1. Use ```LECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```LECmd.exe -f [shortcut_file]```
 	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```
