@@ -1,3 +1,7 @@
+# Find Hidden Files in FAT32 [T1564.001](https://attack.mitre.org/techniques/T1564/001/)
+1. Look at byte 12 of the SFN Entry. The file is hidden if the value is 0x02. 
+2. Use ```Autopsy``` as a secondary tool. 
+
 # View Docker Image Updates in Registry [T1612](https://attack.mitre.org/techniques/T1612/)
 1. Search HTTP logs for the "PATCH" method. 
 
@@ -26,6 +30,9 @@
 
 # Identify TimeStomping [T1070.006](https://attack.mitre.org/techniques/T1070/006/)
 1. Identify Sysmon logs with Event ID 2. 
+2. Look for last access date before the modified date within SFN or LFN in FAT32. 
+3. Use the timeline feature within ```Autopsy``` to find time anomalies. 
+4. Use the ```stat``` command on to review modify, change, access, and birth dates and times. 
 
 # Identify Kerberaost Attack [T1558.003](https://attack.mitre.org/techniques/T1558/003/)
 1. View Windows Security Event logs with Event ID 4769 as well as encryption type 0x17 with uncommon usernames.  
@@ -151,7 +158,12 @@
 3. Focus on the thumbnails/thumbscache that are not deleted after file deletion at ```C:\%USERPROFILE%\AppData\Local\Microsoft\Windows\Explorer```. 
 4. Examine the recycle bin at ```C:\$Recycle.bin```. 
 5. View files access from IE at ```%USERPROFILE%\AppData\Local\Microsoft\Windows\WebCache\WebCacheV*.dat```. 
-6. Use [Rifiuti2](https://github.com/abelcheung/rifiuti2) to exmaine the Recycle Bin. 
+6. Use [Rifiuti2](https://github.com/abelcheung/rifiuti2) to exmaine the Recycle Bin.
+7. Use ```Autopsy``` as a secondary tool and look within the Recycle Bin of a disk image. 
+8. For FAT32, look at SFN entries beginning with ```0xE5``` of a disk image. 
+9. Look at MFT using MFTECmd and see if the file is listed as "In Use". 
+10. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
+11. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
 
 # Examine Executables [T1547.004](https://attack.mitre.org/techniques/T1547/004/) [T1059.006](https://attack.mitre.org/techniques/T1059/006/) [T1559.001]([T1070.004](https://attack.mitre.org/techniques/T1559/001/)) [T1027.004]([T1070.004](https://attack.mitre.org/techniques/T1027/004/)) [T1027.004]([T1070.009](https://attack.mitre.org/techniques/T1027/009/)) [T1055.002](https://attack.mitre.org/techniques/T1055/002)
 1. View the registry at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count``` where the GUID is specific for the OS. 
@@ -239,6 +251,8 @@
 	- Command to use is ```Get-WinEvent -Path <Path to Log> -FilterXPath '*/System/EventID=8'```
 4. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
 5. With Sysmon logs, look for event ID 15. 
+6. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
+7. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
 
 # Autoruns [T1547](https://attack.mitre.org/techniques/T1547)
 1. Use ```autoruns``` within Sysinternals 
@@ -283,7 +297,6 @@
 23. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 24. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 25. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
-
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
 1. Use ```procmon``` within SysInternals
@@ -353,6 +366,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 11. View prefetch files at ```C:\Windows\Prefetch``` for program execution. 
 12. View files access from IE at ```%USERPROFILE%\AppData\Local\Microsoft\Windows\WebCache\WebCacheV*.dat```. 
 13. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
+14. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
+15. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
 
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
@@ -417,6 +432,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 2. Use ```LECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```LECmd.exe -f [shortcut_file]```
 	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```
+3. Use ```MFTECmd``` with the USNJournal to find the specific file activity. 
 
 # Explore Shortcut Files [T1080](https://attack.mitre.org/techniques/T1080) [T1547.009](https://attack.mitre.org/techniques/T1547/009) [T1222](https://attack.mitre.org/techniques/T1222) [T1204.002](https://attack.mitre.org/techniques/T1204/002)
 1. Use ```LECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
@@ -430,6 +446,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 2. Use ```LECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
 	- Command to use ```LECmd.exe -f [shortcut_file]```
 	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```
+3. Use ```MFTECmd``` with the USNJournal to find the specific file activity. 
 
 # Explore Prefetch Files [T1204](https://attack.mitre.org/techniques/T1204)
 1. Use ```PECmd.exe``` (from Eric Zimmerman [here](https://ericzimmerman.github.io/#!index.md) with Command line. 
@@ -455,6 +472,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 	- Command to use ```LECmd.exe -f [shortcut_file]```
 	- Shortcut files: ```C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\``` or ```C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\```. 
 4. Look at Sysmon Event logs for event ID 11. 
+5. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
+6. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
 
 # Explore Powershell Activity [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational. 

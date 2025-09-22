@@ -1,3 +1,13 @@
+# Find SQL Injection [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Look for ```'```, ```---```, ```#```, ```UNION```, ```WAITFOR DELAY```, and ```SLEEP()``` statements in web traffic. 
+
+# Find Cross Site Scripting [T1189](https://attack.mitre.org/techniques/T1189/)
+1. Look for ```<script>```, ```onmouseover```, ```onclick```, and ```onerror``` statements in traffic. 
+
+# Find Path Traversal
+1. Look for traffic with ```/etc/shadow``` and ```/etc/passwd``` in the traffic. 
+2. Look for traffic with ```%2E%2E%2F%2E%2E%2F``` url encoded data. 
+
 # Detect Self Signed Certificates [T1587.003](https://attack.mitre.org/techniques/T1587/003/)
 1. Identify Server or Client traffic in Wireshark with "Certificate, Server Key Exchange, Server Hello Done" and identify the issuer and subject. If same, then self signed. 
 
