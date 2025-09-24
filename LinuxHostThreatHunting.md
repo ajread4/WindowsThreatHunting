@@ -1,3 +1,11 @@
+# Find Command Line Execution [T1059.004](https://attack.mitre.org/techniques/T1059/004/)
+1. Look within the user home directories for ```.bash_history```. 
+2. Look for aliasing within ```.bashrc``` in the user home directory. 
+
+# Find USB Devices [T1025](https://attack.mitre.org/techniques/T1025/)
+1. Look at ```usb``` strings within ```/var/log/syslog```. 
+2. Look at ```dmesg``` strings within ```/var/log/syslog```. 
+
 # Find Hidden Files [T1564.001](https://attack.mitre.org/techniques/T1564/001/)
 1. Use ```osqueryi``` with ```SELECT filename, path, directory, size, type FROM file WHERE path LIKE '/.%';```. 
 
@@ -5,10 +13,12 @@
 1. On the command line, use ```lsof``` to examine process calls and possible network connections. 
 2. On the command line, use ```osqueryi``` to examine processes with ```SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE pid = [PID];```. 
 3. View process execution with [pspy](https://github.com/DominicBreuker/pspy). 
+4. Look for aliasing within ```.bashrc``` in the user home directory. 
 
 # Examine Executables [T1547.004](https://attack.mitre.org/techniques/T1547/004/) [T1059.006](https://attack.mitre.org/techniques/T1059/006/) [T1559.001]([T1070.004](https://attack.mitre.org/techniques/T1559/001/)) [T1027.004]([T1070.004](https://attack.mitre.org/techniques/T1027/004/)) [T1027.004]([T1070.009](https://attack.mitre.org/techniques/T1027/009/)) [T1055.002](https://attack.mitre.org/techniques/T1055/002)
 1. On the command line, use ```lsof``` to examine process calls and possible network connections. 
 2. On the command line, use ```osqueryi``` to examine processes with ```SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE pid = [PID];```. 
+3. Look for aliasing within ```.bashrc``` in the user home directory. 
 
 # Explore Processes [T1059](https://attack.mitre.org/techniques/T1059) [T1055](https://attack.mitre.org/techniques/T1055/)
 1. On the command line, use ```lsof``` to examine process calls and possible network connections. 
@@ -16,6 +26,7 @@
 3. View process execution with [pspy](https://github.com/DominicBreuker/pspy). 
 4. Find all running processes using ```osqueryi``` wiht ```SELECT pid, name, path, state FROM processes;```. 
 5. Find the open files associated with a running process using ```osueryi``` with the ```process_open_files_``` table. 
+6. Look for aliasing within ```.bashrc``` in the user home directory. 
 
 # User Creation [T1136](https://attack.mitre.org/techniques/T1136/)
 1. Look within auth.log for ```useradd``` events. 
@@ -48,6 +59,7 @@
 # View User Authentications [T1078](https://attack.mitre.org/techniques/T1078/)
 1. Look at ```/var/log/auth.log``` file and focus on authentications with ```Accepted Password``` or ```Sessions opened```. 
 2. View login and logout activity with ```/var/log/btmp``` and ```/var/log/wtmp```. 
+3. Look for ```gdm-password``` within ```auth.log```. 
 
 # Find Autostarts [T1547](https://attack.mitre.org/techniques/T1547/)
 1. Look for files within ```/etc/init.d```, ```/etc/rc.d```, and ```/etc/systemd/system```. 
