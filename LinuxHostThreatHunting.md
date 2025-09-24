@@ -1,3 +1,6 @@
+# Find Hidden Files [T1564.001](https://attack.mitre.org/techniques/T1564/001/)
+1. Use ```osqueryi``` with ```SELECT filename, path, directory, size, type FROM file WHERE path LIKE '/.%';```. 
+
 # Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. On the command line, use ```lsof``` to examine process calls and possible network connections. 
 2. On the command line, use ```osqueryi``` to examine processes with ```SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE pid = [PID];```. 
@@ -11,10 +14,14 @@
 1. On the command line, use ```lsof``` to examine process calls and possible network connections. 
 2. On the command line, use ```osqueryi``` to examine processes with ```SELECT pid, fd, socket, local_address, remote_address FROM process_open_sockets WHERE pid = [PID];```. 
 3. View process execution with [pspy](https://github.com/DominicBreuker/pspy). 
+4. Find all running processes using ```osqueryi``` wiht ```SELECT pid, name, path, state FROM processes;```. 
+5. Find the open files associated with a running process using ```osueryi``` with the ```process_open_files_``` table. 
 
 # User Creation [T1136](https://attack.mitre.org/techniques/T1136/)
 1. Look within auth.log for ```useradd``` events. 
 2. Look within ```/etc/passwd``` for another user creation. 
+3. If service based, look within ```journalctl``` output for the specific service. 
+4. Use osqueryi with ```Select username, uid, description from users;``` to find all users. 
 
 # Explore Scheduled Tasks/CronJobs [T1036.004](https://attack.mitre.org/techniques/T136/004) [T1053.005](https://attack.mitre.org/techniques/T1053/005)
 1. Look within ```/var/spool/crontab``` to find each cronjob associated with each user. 
@@ -36,9 +43,11 @@
 # Find Installed Packages [T1072](https://attack.mitre.org/techniques/T1072/)
 1. Use the command ```dpkg -l``` on the system.  
 2. Search for package installs within ```/var/log/dpkg.log```. 
+3. Use the command ```apt list --installed```. 
 
 # View User Authentications [T1078](https://attack.mitre.org/techniques/T1078/)
-1. Look at ```/var/log/auth.log``` file. 
+1. Look at ```/var/log/auth.log``` file and focus on authentications with ```Accepted Password``` or ```Sessions opened```. 
+2. View login and logout activity with ```/var/log/btmp``` and ```/var/log/wtmp```. 
 
 # Find Autostarts [T1547](https://attack.mitre.org/techniques/T1547/)
 1. Look for files within ```/etc/init.d```, ```/etc/rc.d```, and ```/etc/systemd/system```. 
@@ -50,3 +59,8 @@
 # Find Browser Artifacts [T1606.001](https://attack.mitre.org/techniques/T1606/001) [T1539](https://attack.mitre.org/techniques/T1539) [T1550.004](https://attack.mitre.org/techniques/T1550/004) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. Look within user home directory for ```.mozilla/firefox``` or ```.config/googlechrome``` files. 
 2. Use [dumpzilla](https://github.com/Busindre/dumpzilla).
+
+# Look for Kernel Exploits [T1014](https://attack.mitre.org/techniques/T1014/)
+1. View log entries within ```/var/log/kern.log``` and ```/var/log/desmg```. 
+2. Use the ```dmesg``` command to find recent kernel events. 
+3. Look for log files with kernel in ```/var/log/syslog```. 

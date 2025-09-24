@@ -1,3 +1,6 @@
+# Identify User Hotspots Usage [No TTP]
+1. Look witin SOFTWARE hive for Network List Profiles. 
+
 # Find Hidden Files in FAT32 [T1564.001](https://attack.mitre.org/techniques/T1564/001/)
 1. Look at byte 12 of the SFN Entry. The file is hidden if the value is 0x02. 
 2. Use ```Autopsy``` as a secondary tool. 
@@ -368,6 +371,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 13. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 14. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
 15. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
+16. Looked at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths``` or ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery```. 
 
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
@@ -494,6 +498,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 13. View PowerShell Script blocks within PowerShell-Operational.evtx logs with event ID 4104. 
 14. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to highlight powershell downloads with IEX Download String. 
 	- Command to use ```regripper -f [Hive] -a```.
+15. Look for history file at ```APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt```. 
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
