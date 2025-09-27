@@ -26,7 +26,7 @@
 3. View process execution with [pspy](https://github.com/DominicBreuker/pspy). 
 4. Find all running processes using ```osqueryi``` wiht ```SELECT pid, name, path, state FROM processes;```. 
 5. Find the open files associated with a running process using ```osueryi``` with the ```process_open_files_``` table. 
-6. Look for aliasing within ```.bashrc``` in the user home directory. 
+6. Look for aliasing within ```.bashrc``` in the user home directory. 	
 
 # User Creation [T1136](https://attack.mitre.org/techniques/T1136/)
 1. Look within auth.log for ```useradd``` events. 

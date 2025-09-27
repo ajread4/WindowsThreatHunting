@@ -1,3 +1,9 @@
+# Find Policy Changes on System [T1484.001](https://attack.mitre.org/techniques/T1484/001/)
+1. Use the command ```Get-GPResultantSetOfPolicy -ReportType HTML -Path (Join-Path -Path (Get-Location).Path -ChildPath "RSOPReport.html")``` within Powershell. 
+
+# Identify Environemnt Variables [T1543](https://attack.mitre.org/techniques/T1543/)
+1. Use the ```set``` command in the windows command line. Focus on the CompSpec, Path, PSModulePath, Public, and Temp folder locations. 
+
 # Identify User Hotspots Usage [No TTP]
 1. Look witin SOFTWARE hive for Network List Profiles. 
 
@@ -102,6 +108,7 @@
 15. Focus on ShimCache and AmCache.hve with ```rdpclip.exe``` or ```tstheme.exe``` for RDP destination machine. 
 16. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 17. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
+18. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
 
 # View Change to Logging [T1070.001](https://attack.mitre.org/techniques/T1070/001/)
 1. Use ```eventvwr.msc``` with Windows System Event logs 4719. 
@@ -140,6 +147,9 @@
 4. View registry at ```HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Run```. 
 5. View registry at ```HKCU\Software\Microsoft\Windows\CurrentVersion\Run```. 
 6. View registry at ```HKCU\Software\Microsoft\Windows\CurrentVersion\Runonce```. 
+7. Use Systinternals autorunsc tool. 
+8. Use PowerShell with the following command: ```Get-CimInstance Win32_StartupCommand | Select-Object Name, command, Location, User | fl```. 
+9. Use Powershell with the following command: ```$winlogonPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"; "Userinit: $((Get-ItemProperty -Path $winlogonPath -Name 'Userinit').Userinit)"; "Shell: $((Get-ItemProperty -Path $winlogonPath -Name 'Shell').Shell)"```. 
 
 # Detect External Devices [T1025](https://attack.mitre.org/techniques/T1025/)
 1. Track USBs in machine at ```SYSTEM\CurrentControlSet\Enum\USBSTOR``` or ```SYSTEM\CurrentControlSet\Enum\USB```. 
@@ -199,6 +209,8 @@
 27. Examine Sysmon Logs with Event ID 1. 
 28. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 29. Use ```regripper``` to examine the NTUSER.dat file for a specific user looking at UserAssist. 
+30. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
+31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -219,6 +231,7 @@
 5. Look for ShimCache, Amcache, BAM, DAM, or Prefetch with ```net.exe``` or ```net1.exe``` on source machine. 
 6. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648 on source machine. 
 7. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4624, 4672, 4776, 4768, 4769, 5140, and 5145 on destination machine. 
+8. Use Powershell with the command: ```Get-CimInstance -Class Win32_Share```. 
 
 # Examine Services [T1569](https://attack.mitre.org/techniques/T1569/) [T1569.002](https://attack.mitre.org/techniques/T1569/002)
 1. Use ```Get-Service``` within Powershell.
@@ -237,6 +250,8 @@
 	- Command to use is ```wevutil.exe qe Security /q:"*[System[(EventID=7045)]]```
 11. Use ```eventvwr.msc``` with Windows System Event logs 7045. 
 12. View registry for new service creations at ```SYSTEM\CurrentControlSet\Services\[servicename]```. 
+13. Within Powershell run the command: ```Get-CimInstance -ClassName Win32_Service | Where-Object { $_.State -eq "Running" } | Select-Object Name, DisplayName, State, StartMode, PathName, ProcessId | ft -AutoSize```. 
+14. Within Powershell, look for non-running services with ```Get-CimInstance -ClassName Win32_Service | Where-Object { $_.State -ne "Running" } | Select-Object @{Name='Name'; Expression={if ($_.Name.Length -gt 22) { "$($_.Name.Substring(0,19))..." } else { $_.Name }}}, @{Name='DisplayName'; Expression={if ($_.DisplayName.Length -gt 45) { "$($_.DisplayName.Substring(0,42))..." } else { $_.DisplayName }}}, State, StartMode, PathName, ProcessId | Format-Table -AutoSize```
 
 # Analyze OneNote Files [T1137](https://attack.mitre.org/techniques/T1137)
 1. Use ```OneNoteAnalyzer``` found [here](https://github.com/knight0x07/OneNoteAnalyzer)
@@ -300,6 +315,8 @@
 23. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 24. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 25. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
+26. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
+27. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
 1. Use ```procmon``` within SysInternals
@@ -333,6 +350,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 8. Use ```eventvwr.msc``` with Windows Security Event logs 4701. 
 9. Identify processes of ```at.exe``` or ```schtasks.exe``` on the source machine. 
 10. View registry at ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks``` or ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree``` on target machine to find scheduled tasks. 
+11. Look for hive key changes in the NetSh key with ```Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Netsh"```. 
 
 # Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. Use ```procmon``` within SysInternals
@@ -350,6 +368,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 10. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 25.
 11. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
 12. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
+13. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
+14. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
 
 # Explore File Read Activity [No TTP]
 1. Use ```procmon``` within SysInternals
@@ -524,6 +544,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 2. Use ```DeepBlueCLI``` (from [here](https://github.com/sans-blue-team/DeepBlueCLI)) and Powershell. 
 3. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 4. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
+5. Using powershell look for users with ```Get-CimInstance -Class Win32_UserAccount -Filter "LocalAccount=True" | Format-Table  Name, PasswordRequired, PasswordExpires, PasswordChangeable```. 
 
 # Determine PowerShell Down Grade Attack [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```Get-WinEvent``` using PowerShell. 
@@ -543,6 +564,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 
 # Explore Group Enumeration [T1069](https://attack.mitre.org/techniques/T1069)
 1. Use ```eventvwr.msc``` on a Windows system and filter for event ID 4799 within Security event logs. 
+2. Look for unusual groups using powershell with ```Get-LocalGroup | ForEach-Object { $members = Get-LocalGroupMember -Group $_.Name; if ($members) { Write-Output "`nGroup: $($_.Name)"; $members | ForEach-Object { Write-Output "`tMember: $($_.Name)" } } }```. 
 
 # Determine Number of Network Connections [T1021](https://attack.mitre.org/techniques/T1021)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -655,9 +677,13 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 17. Use ```eventvwr.msc``` with Windows Security Event logs 4770 for kerberos ticket renewal. 
 18. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for RDP Logon Activities with an html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 19. Use [Chainsaw](https://github.com/WithSecureLabs/chainsaw/tree/master) and an EVTX dump to search for failed logons with ```./chainsaw hunt [evtx] -r ./rules/```. 
+20. Use powershell with ```Get-LocalUser | Select-Object Name, LastLogon```. 
 
 # Examine Startup Actions [T1547](https://attack.mitre.org/techniques/T1547/)
 1. View ```desktop.ini``` for actions taken during startup. 
+2. Use Systinternals autorunsc tool. 
+3. Use PowerShell with the following command: ```Get-CimInstance Win32_StartupCommand | Select-Object Name, command, Location, User | fl```. 
+4. Use Powershell with the following command: ```$winlogonPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"; "Userinit: $((Get-ItemProperty -Path $winlogonPath -Name 'Userinit').Userinit)"; "Shell: $((Get-ItemProperty -Path $winlogonPath -Name 'Shell').Shell)"```. 
 
 # View Hosted Web Application Exploitation [T1190](https://attack.mitre.org/techniques/T1190/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs 4688 for process creation events on the host. 
