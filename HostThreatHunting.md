@@ -1,4 +1,6 @@
-
+# Disable Protections [T1562.001](https://attack.mitre.org/techniques/T1562/001/)
+1. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Network > Network Connections > Windows Defender Firewall > Domain Profile```. 
+2. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Windows Components```
 
 # Find LNK File Usage [T1027.012](https://attack.mitre.org/techniques/T1027/012/)
 1. Use LECmd from Eric Zimmerman. Use a command like ```.\LECmd.exe -d C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Recent --csvf Parsed-LNK.csv --csv C:\Users\Administrator\Desktop```. 
@@ -6,7 +8,7 @@
 # Find Policy Changes on System [T1484.001](https://attack.mitre.org/techniques/T1484/001/)
 1. Use the command ```Get-GPResultantSetOfPolicy -ReportType HTML -Path (Join-Path -Path (Get-Location).Path -ChildPath "RSOPReport.html")``` within Powershell. 
 
-# Identify Environemnt Variables [T1543](https://attack.mitre.org/techniques/T1543/)
+# Identify Environment Variables [T1543](https://attack.mitre.org/techniques/T1543/)
 1. Use the ```set``` command in the windows command line. Focus on the CompSpec, Path, PSModulePath, Public, and Temp folder locations. 
 
 # Identify User Hotspots Usage [No TTP]
@@ -29,6 +31,7 @@
 # Identify Firewall Tampering [1562.004](https://attack.mitre.org/techniques/T1562/004/)
 1. Look for wierd rule names that were added within the Windows FW event logs. 
 2. Focus on the "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall" Channel with Event ID 2004. 
+3. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Network > Network Connections > Windows Defender Firewall > Domain Profile```. 
 
 # Identify Web Scanning [T1595.003](https://attack.mitre.org/techniques/T1595/003/)
 1. Look through logs within ```/var/log``` to find GET requests within log data. 
@@ -121,6 +124,8 @@
 ```, or ```Remove-EventLog -LogName System```. 
 3. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
 4. Search Windows Security logs for Event ID 4719 and the specific subcategory. 
+5. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Network > Network Connections > Windows Defender Firewall > Domain Profile```. 
+6. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Windows Components```
 
 # View Account Changes [T1098](https://attack.mitre.org/techniques/T1098/) [T1070](https://attack.mitre.org/techniques/T1070/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event id 4724 to view password reset. 
@@ -134,6 +139,8 @@
 7. Look for account creation on the command line with ```net.exe``` or ```net1.exe``` with parent process ```cmd.exe```. 
 8. Use Live-Forensicator Tool with ```.\Forensicator -EVTX EVTX```, and search for User Creation Activity within the html file, can be found [here](https://github.com/Johnng007/Live-Forensicator). 
 9. Use [TimelineExplorer](https://ericzimmerman.github.io/#!index.md) to find suspicious powershell activity using input csv information. 
+10. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Network > Network Connections > Windows Defender Firewall > Domain Profile```. 
+11. Look within GPO for changes to Defender/AV/Firewall within ```Computer Configuration > Policies > Administrative Templates > Windows Components```
 
 # Examine Macros in Word Documents [T1137.001](https://attack.mitre.org/techniques/T1137/001/) [T1564.007](https://attack.mitre.org/techniques/T1564/007/) [T1024.002](https://attack.mitre.org/techniques/T1204/002/)
 1. Use [wmd.pl](https://gist.github.com/kost/eb95e623f1b286aee890) to extract metadata. 
