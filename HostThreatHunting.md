@@ -1,3 +1,8 @@
+
+
+# Find LNK File Usage [T1027.012](https://attack.mitre.org/techniques/T1027/012/)
+1. Use LECmd from Eric Zimmerman. Use a command like ```.\LECmd.exe -d C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Recent --csvf Parsed-LNK.csv --csv C:\Users\Administrator\Desktop```. 
+
 # Find Policy Changes on System [T1484.001](https://attack.mitre.org/techniques/T1484/001/)
 1. Use the command ```Get-GPResultantSetOfPolicy -ReportType HTML -Path (Join-Path -Path (Get-Location).Path -ChildPath "RSOPReport.html")``` within Powershell. 
 
@@ -210,13 +215,15 @@
 28. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 29. Use ```regripper``` to examine the NTUSER.dat file for a specific user looking at UserAssist. 
 30. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
-31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
+31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
+32. Use Eric Zimmermans Amcache parser in Powershell. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
 2. View the Amcache or recentfile cache for data storage during process creation at ```C:\Windows\AppCompat\Programs\Amcache.hve```. 
 3. Focus on ShimCache and AmCache.hve with ```mstsc.exe``` for RDP source connections. 
 4. Focus on ShimCache and AmCache.hve with ```rdpclip.exe``` or ```tstheme.exe``` for RDP destination machine. 
+5. Use Eric Zimmermans Amcache parser in Powershell. 
 
 # Examine Application Crashes [T1499.004](https://attack.mitre.org/techniques/T1499/004)
 1. Use ```eventvwr.msc``` with Windows Security Event logs 1001. 
@@ -351,6 +358,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 9. Identify processes of ```at.exe``` or ```schtasks.exe``` on the source machine. 
 10. View registry at ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks``` or ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree``` on target machine to find scheduled tasks. 
 11. Look for hive key changes in the NetSh key with ```Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Netsh"```. 
+12. Look at Task Scheduler App. 
 
 # Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. Use ```procmon``` within SysInternals
@@ -519,6 +527,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 14. Use [RegRipper](https://www.sans.org/blog/regripper-ripping-registries-with-ease/) to highlight powershell downloads with IEX Download String. 
 	- Command to use ```regripper -f [Hive] -a```.
 15. Look for history file at ```APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt```. 
+16. Use Eric Zimmermans Amcache parser in Powershell. 
 
 # View PowerShell Command Execution [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational and look for EventID 4104.  
