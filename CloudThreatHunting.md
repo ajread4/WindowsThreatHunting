@@ -224,6 +224,21 @@
 
 ## Host
 
+### Identify Authentication [T1110](https://attack.mitre.org/techniques/T1110/)
+1. Query the Azure Log Analytics Workspace via the GUI if Syslog Data is imported. 
+	- Query to run: 
+		- ```Syslog | where SyslogMessage has "Accepted publickey"``` 
+
+### Identify File Upload [T1608.001](https://attack.mitre.org/techniques/T1608/001/)
+1. Query the Azure Log Analytics Workspace via the GUI. 
+	- Query to run: 
+		- ```StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri```
+		- ```StorageBlobLogs | where ObjectKey == [Filename]```
+2. Query the Azure Log Analytics Workspace via the CLI. 
+	- Commands to run: 
+		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
+		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri'```
+
 ### Identify Suspicious Cloud Accounts [T1078.004](https://attack.mitre.org/techniques/T1078/004/)
 1. Query the Azure Log Analytics Workspace via the GUI with the BehaviorAnalytics table. 
 	- Query to run: ```BehaviorAnalytics | where ActivityInsights.CountryUncommonlyConnectedFromAmongPeers == True | project TimeGenerated, ActivityType, UserName, SourceIPAddress, ActivityInsights```
@@ -260,9 +275,11 @@
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where OperationName =="GetBlob" | project TimeGenerated,AccountName,CallerIpAddress, Uri'```
 3. Query for other log sources within Azure Log Analytics Workspace to include: ```StorageFileLogs```, ```StorageTableLogs```, and ```StorageQueueLogs```. 
 
-### View File Creation Events [No TTP]
+### View File Creation Events [T1608.001](https://attack.mitre.org/techniques/T1608/001/)
 1. Query the Azure Log Analytics Workspace via the GUI. 
-	- Query to run: ```StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri```
+	- Query to run: 
+		- ```StorageFileLogs | where OperationName =="CreateFile" | project TimeGenerated,CallerIpAddress, Uri```
+		- ```StorageBlobLogs | where ObjectKey == [Filename]```
 2. Query the Azure Log Analytics Workspace via the CLI. 
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
@@ -322,13 +339,15 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'StorageBlobLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | extend SourceIP = split(CallerIpAddress,":")[0] | summarize dataIn = sum(ResponseBodySize) by tostring(SourceIP), OperationName | sort by dataIn'```
+		
 ### Detect Command Execution [T1059](https://attack.mitre.org/techniques/T1059/)
-1. Query the Log Analytics Workspace in the GUI for AzureActivity. 
+1. Query the Log Analytics Workspace in the GUI for AzureActivity and look for ```MICROSOFT.COMPUTE/VIRTUALMACHINES/RUNCOMMAND/ACTION``` as the OperationNameValue. 
 	- Query to run: ```AzureActivity | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | project TimeGenerated,  OperationNameValue, Level, Caller```
 2. Query the Log Analytics Workspace through the CLI. 
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'AzureActivity | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) | project TimeGenerated,  OperationNameValue, Level, Caller'```
+3. All run command data is stored in ```/var/lib/waagent/run-command/download/<number>/script.sh``` on a VM. 
 
 ### Detect Managed Identity Usage [T1552.005](https://attack.mitre.org/techniques/T1552/005/)
 1. Query the Log Analytics Workspace through the CLI and the AADManagedIdentitySignInLogs table and match ServicePrincipalId with the user identities. 
@@ -340,6 +359,10 @@
 	- Queries to run: 
 		- ```AADManagedIdentitySignInLogs | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00"))```
 		- ```AzureActivity | where TimeGenerated between(datetime("8/9/2023 00:00:00")..datetime("8/10/2023 00:00:00")) and Caller == [UserID]```
+3. Find the managed identities and match them against detected identities.  
+	- Commands to run: 
+		- ```az resource list --query "[?identity.type=='SystemAssigned'].{Name:name principalId:identity.principalId}" --output table```
+
 ## Network
 
 ### Detect SSH Brute Force [T1110](https://attack.mitre.org/techniques/T1110/)
@@ -356,6 +379,9 @@
 	- Commands to run: 
 		- ```WORKSPACE_GUID=$(az monitor log-analytics workspace show --resource-group [RsourceGroup] --workspace-name [WorkspaceName] --query 'customerId' --output tsv)```
 		- ```az monitor log-analytics query --workspace $WORKSPACE_GUID --analytics-query 'SecurityAlert | where Tactics == "CredentialAccess" | extend MaliciousIP = split(split(tostring(Entities),"Address")[1],'"')[2] | project TimeGenerated, DisplayName, MaliciousIP | sort by TimeGenerated asc'```
+9. Query the Azure Log Analytics Workspace via the GUI if Syslog Data is imported. 
+	- Query to run: 
+		- ```Syslog | where SyslogMessage has "Accepted publickey"``` 
 
 ### Detect Sign in Activity [T1078.004](https://attack.mitre.org/techniques/T1078/004/) [T1110.001](https://attack.mitre.org/techniques/T1110/001/)
 1. Query the Log Analytics Workspace in the GUI for all successful logins. 
@@ -369,6 +395,7 @@
 	- Query to run: ```LinuxAuth_CL | project TimeGenerated, RawData```
 5. View Risky sign-ins from Azure Active Directory. 
 6. View Sign-in logs from Azure Active Directory within the web GUI. 
+7. If Syslog data is imported, look for "Accepted publickey for [user] from" within the Syslog message. 
 
 ### Detect Failed Password Attempts [T1110.001](https://attack.mitre.org/techniques/T1110/001/)
 1. Query the Log Analytics Workspace in the GUI for failed login attempts with a password. 

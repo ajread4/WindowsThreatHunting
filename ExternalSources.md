@@ -4,4 +4,5 @@
 2. [Mitre Att&ck](https://attack.mitre.org/)
 3. [Hunting Queries](https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules/tree/main)
 4. [SecurityAura Threat Hunting](https://github.com/SecurityAura/DE-TH-Aura)
-
+5. [KQL Queries](https://www.kqlsearch.com/)
+6. [MustLearnKQL](https://github.com/rod-trent/MustLearnKQL)

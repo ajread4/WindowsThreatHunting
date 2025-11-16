@@ -224,6 +224,7 @@
 30. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
 31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
 32. Use Eric Zimmermans Amcache parser in Powershell. 
+33. Look at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths```. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -406,7 +407,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 13. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 14. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
 15. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
-16. Looked at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths``` or ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery```. 
+16. Look at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths``` or ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery```. 
 
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
