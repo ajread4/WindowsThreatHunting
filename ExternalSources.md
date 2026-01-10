@@ -6,3 +6,4 @@
 4. [SecurityAura Threat Hunting](https://github.com/SecurityAura/DE-TH-Aura)
 5. [KQL Queries](https://www.kqlsearch.com/)
 6. [MustLearnKQL](https://github.com/rod-trent/MustLearnKQL)
+7. [AzTier](https://aztier.com/)
