@@ -179,7 +179,7 @@
 1. Look at ```SYSTEM\CurrentControlSet\Control\TimeZoneInformation``` within the System Hive. 
 
 # Explore File Deletion [T1485](https://attack.mitre.org/techniques/T1485/) [T1070.004](https://attack.mitre.org/techniques/T1070/004/) [T1070.009](https://attack.mitre.org/techniques/T1070/009/)
-1. Focus on WordWheelQuery from the START menu located at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery```. 
+1. Focus on WordWheelQuery from the START menu located at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery``` using Registry Explorer. 
 2. View the Last Visited MRU at ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\Comdlg32\LastVisited[PID]MRU```. 
 3. Focus on the thumbnails/thumbscache that are not deleted after file deletion at ```C:\%USERPROFILE%\AppData\Local\Microsoft\Windows\Explorer```. 
 4. Examine the recycle bin at ```C:\$Recycle.bin```. 
@@ -190,6 +190,9 @@
 9. Look at MFT using MFTECmd and see if the file is listed as "In Use". 
 10. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
 11. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
+12. Examine the RecentFiles at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs```.
+13. Look at OpenSavePidlMRU at ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU```. 
+14. Use ShellBags explorer from EZ Tools. 
 
 # Examine Executables [T1547.004](https://attack.mitre.org/techniques/T1547/004/) [T1059.006](https://attack.mitre.org/techniques/T1059/006/) [T1559.001]([T1070.004](https://attack.mitre.org/techniques/T1559/001/)) [T1027.004]([T1070.004](https://attack.mitre.org/techniques/T1027/004/)) [T1027.004]([T1070.009](https://attack.mitre.org/techniques/T1027/009/)) [T1055.002](https://attack.mitre.org/techniques/T1055/002)
 1. View the registry at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count``` where the GUID is specific for the OS. 
@@ -226,7 +229,11 @@
 31. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
 32. Use Eric Zimmermans Amcache parser in Powershell. 
 33. Look at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths```. 
-34. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
+34. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```. 
+35. Focus on WordWheelQuery from the START menu located at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery``` using Registry Explorer. 
+36. Examine the RecentFiles at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs```.
+37. Look at OpenSavePidlMRU at ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU```. 
+38. Use ShellBags explorer from EZ Tools. 
 
 # Examine the Shimcache/Amcache
 1. View the AppCompatCache to determine time of execution and name of executable at ```SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatCache```. 
@@ -249,6 +256,7 @@
 6. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4648 on source machine. 
 7. Use ```eventvwr.msc``` with Windows Security Event logs event ID 4624, 4672, 4776, 4768, 4769, 5140, and 5145 on destination machine. 
 8. Use Powershell with the command: ```Get-CimInstance -Class Win32_Share```. 
+9. Use ShellBags explorer from EZ Tools. 
 
 # Examine Services [T1569](https://attack.mitre.org/techniques/T1569/) [T1569.002](https://attack.mitre.org/techniques/T1569/002)
 1. Use ```Get-Service``` within Powershell.
@@ -334,7 +342,8 @@
 25. Examine Windows Defender Logs with Event ID 1117 within the Channel Microsoft-Windows-Windows Defender/Operational. 
 26. Run the following command in PowerShell on the system: ```Get-NetTCPConnection | select Local*, Remote*, State, OwningProcess,` @{n="ProcName";e={(Get-Process -Id $_.OwningProcess).ProcessName}},` @{n="ProcPath";e={(Get-Process -Id $_.OwningProcess).Path}} | sort State | ft -Auto ```. 
 27. Look at processes within Powershell with ```Get-WmiObject -Class Win32_Process | ForEach-Object {$owner = $_.GetOwner(); [PSCustomObject]@{Name=$_.Name; PID=$_.ProcessId; P_PID=$_.ParentProcessId; User="$($owner.User)"; CommandLine=if ($_.CommandLine.Length -le 60) { $_.CommandLine } else { $_.CommandLine.Substring(0, 60) + "..." }; Path=$_.Path}} | ft -AutoSize```. 
-28. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```
+28. Look for non-standard processes within Elastic ES|QL with: ```FROM logs-* | Where process.name IS NOT NULL | stats count=count(process.name) by process.name, host.hostname | Where count < 5 | stats rare_process_count = COUNT_DISTINCT(process.name), processes = VALUES(process.name) by host.hostname| SORT rare_process_count DESC| Keep host.hostname,rare_process_count, processes```. 
+29. Use ShellBags explorer from EZ Tools. 
 
 # Explore Registry Activity [T1564.001](https://attack.mitre.org/techniques/T1564/001) [T1574](https://attack.mitre.org/techniques/T1574)[T1112](https://attack.mitre.org/techniques/T1112)[T1070.007](https://attack.mitre.org/techniques/T1070/007) [T1070.009](https://attack.mitre.org/techniques/T1070/009)[T1003.002](https://attack.mitre.org/techniques/T1003/002)[T1027.011](https://attack.mitre.org/techniques/T1027/011)[T1137](https://attack.mitre.org/techniques/T1137)[T1012](https://attack.mitre.org/techniques/T1012) [T1033](https://attack.mitre.org/techniques/T1033) [T1569.002](https://attack.mitre.org/techniques/T1569/002) [T1552.002](https://attack.mitre.org/techniques/T1552/002)
 1. Use ```procmon``` within SysInternals
@@ -353,6 +362,7 @@
 10. Look for registry modifications to ```HKLM\SYSTEM\CurrentControlSet\Services\<NetworkProviderName>\NetworkProvider```, ```HKLM\SYSTEM\CurrentControlSet\Control\Lsa\
 Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order```. 
 11. Use ```regripper``` to examine the NTUSER.dat file for a specific user looking at UserAssist. 
+12. Examine the RecentFiles at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs```.
 
 # Explore Scheduled Tasks [T1036.004](https://attack.mitre.org/techniques/T136/004) [T1053.005](https://attack.mitre.org/techniques/T1053/005)
 1. Use ```Get-WinEvent``` with Sysmon Event Logs. 
@@ -370,6 +380,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 10. View registry at ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tasks``` or ```Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree``` on target machine to find scheduled tasks. 
 11. Look for hive key changes in the NetSh key with ```Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Netsh"```. 
 12. Look at Task Scheduler App. 
+13. Focus on WordWheelQuery from the START menu located at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery``` using Registy Explorer. 
 
 # Explore Process Thread Activity [T1134.003](https://attack.mitre.org/techniques/T1134/003) [T1574.005](https://attack.mitre.org/techniques/T574/005) [T1574.010](https://attack.mitre.org/techniques/T1574/010) [T1055.003](https://attack.mitre.org/techniques/T1055/003) [T1055.005](https://attack.mitre.org/techniques/T1055/005) [T1620](https://attack.mitre.org/techniques/T1620)
 1. Use ```procmon``` within SysInternals
@@ -412,6 +423,9 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 14. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
 15. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
 16. Look at Typed Paths within ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths``` or ```NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery```. 
+17. Look at OpenSavePidlMRU at ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU```. 
+18. Use ShellBags explorer from EZ Tools. 
+19. Use LECmd from Eric Zimmerman. Use a command like ```.\LECmd.exe -d C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Recent --csvf Parsed-LNK.csv --csv C:\Users\Administrator\Desktop```. 
 
 # Explore File Download [T1546.016](https://attack.mitre.org/techniques/T1546/016) [T1027.006](https://attack.mitre.org/techniques/T1027/006) [T1566.002](https://attack.mitre.org/techniques/T1566/002) [T1218.001](https://attack.mitre.org/techniques/T1218/001) [T1189](https://attack.mitre.org/techniques/T1189) [T1203](https://attack.mitre.org/techniques/T1203)[T1608.004](https://attack.mitre.org/techniques/T1608/004) [T1218.005](https://attack.mitre.org/techniques/T1218/005) [T1204.001](https://attack.mitre.org/techniques/T1204/001) [T1176](https://attack.mitre.org/techniques/T1176) [T1185](https://attack.mitre.org/techniques/T1185)
 1. View the MRU at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSave[PID]MRU```. 
@@ -428,6 +442,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 11. View edge user downloads looking at the History sqlite3 database table, specifically the downloads table. 
 12. View edge user downloads looking at the History sqlite3 database table, specifically the urls table. 
 13. View edge user downloads looking at the History sqlite3 database table, specifically the downloads_url_chains table. 
+14. Examine the RecentFiles at ```NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs```.
 
 # View Email Attachments [T1566.001](https://attack.mitre.org/techniques/T1566/001)[T1566.002](https://attack.mitre.org/techniques/T1566/002)
 1. View email attachments at ```%USERPROFILE%\AppData\Local\Microsoft\Outlook```. 
@@ -518,6 +533,7 @@ Notification Packages```, or ```HKLM\SYSTEM\CurrentControlSet\Control\NetworkPro
 4. Look at Sysmon Event logs for event ID 11. 
 5. Use ```MFTECmd``` with the USNJournal ($J) to find the specific file activity. 
 6. Use ```MFTECmd``` with the $I30 file to find the specific file activity. 
+7. Look at OpenSavePidlMRU at ```HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU```. 
 
 # Explore Powershell Activity [T1059.001](https://attack.mitre.org/techniques/T1059/001) [T1546.013](https://attack.mitre.org/techniques/T1546/013)
 1. Use ```eventvwr.msc``` on a Windows system and navigate to Applications and Services Logs -> Microsoft -> Windows -> PowerShell -> Operational. 
